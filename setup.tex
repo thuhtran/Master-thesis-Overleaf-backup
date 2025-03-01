@@ -1,0 +1,84 @@
+%------------------------------------------------------------------------------
+%       package includes
+%------------------------------------------------------------------------------
+\usepackage[T1]{fontenc}  % 8-bit fonts, improves hyphenation
+\usepackage[utf8x]{inputenc}
+\usepackage{scrhack}  % Compatibility for book/scrbook switch
+
+% ------------------- layout, default -------------------
+\usepackage[labelfont=bf, labelsep=colon, format=hang, textfont=singlespacing]{caption}
+\usepackage{chngcntr}  % Continuous numbering across chapters
+\counterwithout{equation}{chapter}
+\counterwithout{figure}{chapter}
+\counterwithout{table}{chapter}
+
+\setkomafont{chapter}{\normalfont\bfseries\huge}
+\usepackage{setspace}  % Line spacing
+\onehalfspacing
+
+% ------------------- functional, default -------------------
+\usepackage[dvipsnames]{xcolor}  % More colors
+\usepackage{array}  % Custom table column formatting
+\usepackage{graphicx}  % Include graphics
+\usepackage{subfig}  % Subfigures
+\usepackage{amsmath, amsthm, amsfonts}  % Math support
+\usepackage{calc}  % LaTeX calculations
+\usepackage[unicode=true,bookmarks=true,bookmarksnumbered=true,
+            bookmarksopen=true,bookmarksopenlevel=1,breaklinks=false,
+            pdfborder={0 0 0},backref=false,colorlinks=true,
+            linkcolor=UniBlue,citecolor=UniRed,urlcolor=UniGrey]{hyperref}
+
+% ------------------- functional, custom -------------------
+\usepackage{algorithm, algpseudocode}
+\usepackage{bm}  % Bold math symbols
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage[protrusion=true,expansion=true,kerning]{microtype}
+
+%------------------------------------------------------------------------------
+%       (re)new commands / settings
+%------------------------------------------------------------------------------
+% ----------------- referencing ----------------
+\newcommand{\secref}[1]{Section~\ref{#1}}
+\newcommand{\chapref}[1]{Chapter~\ref{#1}}
+\renewcommand{\eqref}[1]{Equation~(\ref{#1})}
+\newcommand{\figref}[1]{Figure~\ref{#1}}
+\newcommand{\tabref}[1]{Table~\ref{#1}}
+
+% ------------------- colors -------------------
+\definecolor{darkgreen}{rgb}{0.0, 0.5, 0.0}
+\definecolor{UniBlue}{RGB}{0, 74, 153}
+\definecolor{UniRed}{RGB}{193, 0, 42}
+\definecolor{UniGrey}{RGB}{154, 155, 156}
+
+% ------------------- layout -------------------
+\let\mySection\section\renewcommand{\section}{\suppressfloats[t]\mySection}
+\let\mySubSection\subsection\renewcommand{\subsection}{\suppressfloats[t]\mySubSection}
+
+% ------------------- marker commands -------------------
+\newcommand{\todo}[1]{\textbf{\textcolor{red}{(TODO: #1)}}}
+\newcommand{\extend}[1]{\textbf{\textcolor{darkgreen}{(EXTEND: #1)}}}
+\newcommand{\draft}[1]{\textbf{\textcolor{NavyBlue}{(DRAFT: #1)}}}
+
+% ------------------- math formatting commands -------------------
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\mat}[1]{\mathbf{#1}}
+\newcommand{\eqname}[1]{\tag*{#1}}
+
+% ------------------- pdf settings -------------------
+\hypersetup{pdftitle={The great title!},
+            pdfauthor={FirstName LastName},
+            pdfsubject={Undergraduate thesis at the Albert Ludwig University of Freiburg},
+            pdfkeywords={deep learning, awesome algorithm, undergraduate thesis},
+            pdfpagelayout=OneColumn, pdfnewwindow=true, pdfstartview=XYZ, plainpages=false}
+
+% ------------------- Tikz styles -------------------
+\tikzset{>=latex}  % Arrow style
+
+% ------------------- algorithm ---------------------
+\newcommand{\alignedComment}[1]{\Comment{\parbox[t]{.35\linewidth}{#1}}}
+\algnewcommand\algorithmicforeach{\textbf{foreach}}
+\algdef{S}[FOR]{ForEach}[1]{\algorithmicforeach\ #1\ \algorithmicdo}
+
+
+
