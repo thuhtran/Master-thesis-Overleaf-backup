@@ -27,6 +27,7 @@ includefoot]{geometry}
     \include{chapters/0_0-titlepage}
     
     \pagestyle{plain} % remove chapter name from top, page number at the bottom
+    
     \frontmatter  % roman page numbers
     
     \include{chapters/0_2-abstract}
@@ -34,19 +35,26 @@ includefoot]{geometry}
     \listoffigures
     \listoftables
     \listofalgorithms
+
+    \newcounter{frontmatterpages}
+    \setcounter{frontmatterpages}{\value{page}}
     
     \hypersetup{pageanchor=true}  % re-enable hyperlinking
 
     \mainmatter  % Arabic page numbers
     \include{chapters/1-introduction}
     \include{chapters/2-relatedwork}
-    \include{chapters/3-background}
-    \include{chapters/4-approach}
-    \include{chapters/5-experiments}
+    \include{chapters/3-model}
+    \include{chapters/4-mainresults}
+    \include{chapters/5-extension}
     \include{chapters/6-conclusions}
-    \include{chapters/7-acknowledgments}
 
-    \frontmatter 
+    \clearpage
+    \pagenumbering{roman} 
+
+    \setcounter{page}{\value{frontmatterpages}+1}
+
+    
     \include{chapters/0_1-declaration}
 
     % bibliography is not in the table of contents per default, add it manually
@@ -56,6 +64,7 @@ includefoot]{geometry}
     \newpage
     \thispagestyle{empty}
     \mbox{}
-    
+
+    \include{chapters/appendix}
 
 \end{document}
