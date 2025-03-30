@@ -5,7 +5,9 @@
 % if you'd rather have a one sided thesis, add `onside' to the documentclass
 \documentclass[oneside,12pt, a4paper, english, ngerman]{scrbook}% Set paper format
 
-
+%\usepackage{apacite}
+\usepackage{natbib}
+\bibliographystyle{apalike}
 
 \usepackage[
 lmargin = {6cm},
@@ -41,6 +43,8 @@ includefoot]{geometry}
     
     \hypersetup{pageanchor=true}  % re-enable hyperlinking
 
+
+
     \mainmatter  % Arabic page numbers
     \include{chapters/1-introduction}
     \include{chapters/2-relatedwork}
@@ -54,17 +58,20 @@ includefoot]{geometry}
 
     \setcounter{page}{\value{frontmatterpages}+1}
 
-    
-    \include{chapters/0_1-declaration}
+ 
 
     % bibliography is not in the table of contents per default, add it manually
     \addcontentsline{toc}{chapter}{Bibliography}
-    \bibliographystyle{ieeetr}
-    \bibliography{bib/topic1,bib/topic2}
-    \newpage
-    \thispagestyle{empty}
-    \mbox{}
+    %\bibliographystyle{apalike}
+    \bibliography{bib/ref}
+    
+    %\newpage
+    %\thispagestyle{empty}
+    %\mbox{}
 
     \include{chapters/appendix}
-
+    
+   \addcontentsline{toc}{chapter}{Declaration of Authorship}
+    \include{chapters/0_1-declaration}
+    
 \end{document}
