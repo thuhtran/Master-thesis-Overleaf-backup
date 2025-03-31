@@ -5,12 +5,29 @@
 
 The quest to determine whether the stock returns are predictable or not is an open matter in the financial econometric literature. \citet{rapach_forecasting_2013} survey time-series regression models with different indicators to forecast US equity premium. These models show weak stock returns predictability. More recently, machine learning approaches are receiving attention, though their performance is still a long way to be significant. One recent study by \citet{kelly_virtue_2024} shows theoretical support for complex and large machine learning models. A comparative study by \citet{gu_empirical_2020} suggests that neural network and regression trees are the best performing models to predict asset risk premiums. 
 
-\noindent abc
+While the aforementioned debate is on its way, another line of literature as well as the focus of this thesis is, instead, focusing on predicting the sign of returns. Being able to predict direction-of-change is economically meaningful, for instant in evaluating trading strategies. Earlier result by \citet{leichttanner1991}, considering the case of interest rate forecast, concludes that directional accuracy and profits are closely related, while that is not the case between traditional summary statistics (average absolute error and root-mean-square error) and profits. \citet{christoffersen_financial_2006} find that sign predictability does not necessarily require conditional mean predictability. \citet{christoffersenetal2007} further investigate the importance of higher-order conditional moments (skewness and kurtosis) to sign predictability. In general, we can model the direction-of-change forecasting problem as a binary classification problem (e.g. going up/down). Different variation of logistic regression models are examined, for instant by \citet{rydbergshephard2003} or by \citet{anatolyevgospodinov2010}. In the first paper, \citet{rydbergshephard2003} decompose trade-by-trade price changes into activity (move or not), direction, and size of movement. Key explanatory variables are lagged variables of the components. In a different context, \citet{anatolyevgospodinov2010}’s decomposition include the sign component and the absolute value of returns. Their set of predictors include lagged of signed of returns/absolute value, along with other macroeconomic variables (e.g. dividend-price ratio, three-month T-bill rate). Beyond the paradigm of classical binary response models, one can also find recently increasing attempts to exploit the power of machine learning (e.g. survey by \citet{bustos_stock_2020}).  
 
 \par
 {\noindent\bfseries Probit Models in Forecasting Stock Price Movement}
 
-abc
+\begin{landscape}
+\begin{table}[htbp]
+    \centering
+    \caption{Your Table Title}
+    \label{tab:my-table}
+    \begin{tabularx}{\linewidth}{l X l X l}
+        \hline
+        \textbf{Literature} & \textbf{Domain} & \textbf{Investigation Object} &
+        \textbf{Experimental Data} & \textbf{Gold Standard} \\
+        \hline
+        Chapman et al. 2001 & Clinical & Identification of negation in clinical information &
+        1500 medical records & Expert reviews & Pattern recognition \\
+        Dadvar, Hauff et al. & Consumer opinions & Classification of negation &
+        2000 tweets & Lexicon-based \\
+        \hline
+    \end{tabularx}
+\end{table}
+\end{landscape}
 
 \par
 
