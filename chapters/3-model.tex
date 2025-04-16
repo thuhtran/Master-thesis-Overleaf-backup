@@ -1,12 +1,47 @@
-\chapter{Theoretical Models}\label{chap:model}
-Explain the math and notation.
-\input{figures/background/algBackpropagation}
-\input{figures/background/figSiamese}
-
-\section{Ordered Probit Models}
+\chapter{Theoretical Model}\label{chap:model}
+\todo{chapter intro Explain the math and notation.}
 
 
-\section{Probit Model (Benchmark)}
+
+{\noindent\bfseries Convention: Sign of Returns versus Price Movement}
+
+In order to improve readability, the notion of \textit{transaction price movement} is used interchangeably with \textit{sign of transaction returns}. If the simple transaction-by-transaction, or \textbf{tick returns} is defined as:
+
+\begin{equation}
+    r_t = \frac{P_t - P_{t-1}}{P_{t-1}} ,
+    \label{eq:1}
+\end{equation}
+where $P_t$ is the transaction price at time $t$, then the positive (negative) sign of returns is equivalent to the upward (downward) price move when \(P_t > P_{t-1}\) (\(P_t < P_{t-1}\)).
+
+\section{Ordered Probit Model}
+
+Our ordered probit model set-up follows \citet{hausman1992} with some simplification. 
+
+In the context of high frequency financial data, "tick" is the smallest unit of price movement. Let $Z_k \equiv P(t_k) - P(t_{k-1})$ be an integer of observed price changes, i.e. multiples of tick. The core idea of the ordered probit model is to map the observable discrete random variable $Z_k$ with an unobserved continuous random variable $Z^*_k$. In practice, one can partition a finite number of price change categories into \textit{m} state spaces (e.g. 1-tick change, 2-tick change and so on). Depending on where $Z^*_k$ lies in the state space, $Z_k$ is determined accordingly:
+
+\begin{equation}
+Z_k =
+\begin{cases}
+s_1 & \text{if } Z_k^* \in A_1, \\
+s_2 & \text{if } Z_k^* \in A_2, \\
+\vdots & \vdots \\
+s_m & \text{if } Z_k^* \in A_m,
+\end{cases}
+    \label{eq:2}
+\end{equation}
+where $s_j$ are discrete values forming state space \(\mathscr{S}\) of $Z_k$, and $A_j$ are the sets forming the partition of the state space \(\mathscr{S^*}\) of $Z^*_k$. 
+
+The unobservable continuous random variable $Z^*_k$ follows a model such that
+
+\begin{equation}
+Z_k^* = X_k' \beta + \varepsilon_k, \quad \mathbb{E}[\varepsilon_k \mid X_k] = 0, \quad \varepsilon_k \ \text{i.n.i.d.} \ \mathcal{N}(0, \sigma_k^2),
+    \label{eq:3}
+\end{equation}
+where \(\varepsilon_k\) is independently but not identically distributed, and $X_k$ is a \(q\times1\) vector of explanatory variables at time $t_{k-1}$.
+
+{\noindent\bfseries Conditional Variance \(\sigma_k^2\)}
+
+Noticeably, \citet{hausman1992}'s ordered probit model also accounts for conditional heteroskedasticity. 
 
 
 
