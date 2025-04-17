@@ -85,11 +85,44 @@ with variance
 
 {\noindent\bfseries Conditional Distribution and Log-Likelihood Function}
 
+Last but not least, under the assumption of \(\varepsilon_k \) following normal (or Gaussian) distribution:
+\begin{align}
+P(Z_k = s_i \mid X_k, \Delta t_k) &= P(\alpha_{m-1} < X_k'\beta+ \varepsilon_k \leq \alpha_1 \mid X_k, \Delta t_k) \\
+&=
+\begin{cases}
+P(X_k' \beta + \varepsilon_k \leq \alpha_1 \mid X_k, \Delta t_k) & \text{if } i = 1, \\
+P(\alpha_{i-1} < X_k' \beta + \varepsilon_k \leq \alpha_i \mid X_k, \Delta t_k) & \text{if } 1<i<m, \\
+P(\alpha_{m-1} < X_k' \beta + \varepsilon_k \mid X_k, \Delta t_k) & \text{if } i = m,
+\end{cases} \\
+&=
+\begin{cases}
+\Phi\left( \frac{\alpha_1 - X_k' \beta}{\sigma_k} \right) & \text{if } i = 1, \\
+\Phi\left( \frac{\alpha_i - X_k' \beta}{\sigma_k} \right) - \Phi\left( \frac{\alpha_{i-1} - X_k' \beta}{\sigma_k} \right) & \text{if } 1<i<m, \\
+1 - \Phi\left( \frac{\alpha_{m-1} - X_k' \beta}{\sigma_k} \right) & \text{if } i=m,
+\end{cases}
+\label{eq:8}
+\end{align}
 
+where \(\Phi(\cdot)\) is the cumulative distribution function of standard normal distribution. Our model is then estimated with Maximum Likelihood via the following log-likelihood function with \verb|oglmx| package in R:
 
-
-
-
+\begin{equation}
+\label{eq:9}
+\begin{split}
+\mathcal{L}(Z \mid X)
+&= \sum_{k=1}^n \Bigl\{
+     Y_{1k}\,\log\Phi\!\Bigl(\tfrac{\alpha_1 - X_k'\beta}{\sigma_k}\Bigr) \\[6pt]
+&\quad
+   + \sum_{i=2}^{m-1} Y_{ik}\,\log\Bigl[
+       \Phi\!\Bigl(\tfrac{\alpha_i - X_k'\beta}{\sigma_k}\Bigr)
+     - \Phi\!\Bigl(\tfrac{\alpha_{i-1} - X_k'\beta}{\sigma_k}\Bigr)
+     \Bigr] \\[6pt]
+&\quad
+   + Y_{mk}\,\log\Bigl[
+       1 - \Phi\!\Bigl(\tfrac{\alpha_{m-1} - X_k'\beta}{\sigma_k}\Bigr)
+     \Bigr]
+ \Bigr\}\,.
+\end{split}
+\end{equation}
 
 
 
