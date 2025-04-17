@@ -2,7 +2,6 @@
 \todo{chapter intro Explain the math and notation.}
 
 
-
 {\noindent\bfseries Convention: Sign of Returns versus Price Movement}
 
 In order to improve readability, the notion of \textit{transaction price movement} is used interchangeably with \textit{sign of transaction returns}. If the simple transaction-by-transaction, or \textbf{tick returns} is defined as:
@@ -48,10 +47,28 @@ X_k' \beta = \mu \Delta t_k, \quad \sigma_k^2 = \gamma^2 \Delta t_k,
     \label{eq:4}
 \end{equation}
 
-\citet{hausman1992} further extends the model and let the variance also depend linearly on other economic variables. However, in the scope of this thesis, we simplify by adopting the first specification as in \eqref{eq:4}.
+\citet{hausman1992} further extends the model and let the variance also depend linearly on other economic variables.
+However, in the scope of this thesis, we simplify our model by adopting the first specification as in \eqref{eq:4}.
 
 {\noindent\bfseries Explanatory Variables $X_k$ }
 
+Our explanatory variables consist of:
+\begin{itemize}
+    \item $Z_{k-l}$: Three lags of price changes variable $Z_k$ (l = 1, 2, 3).
+    \item $IBS_{k-l}$: Three lags of buyer/seller-initiated trade indicator (l = 1, 2, 3). The classification of trade direction is performed based on the method proposed by \citet{leeready1991}, detailed algorithm is described in Algorithm \ref{alg:IBS}. This different approach than that of \citet{hausman1992} avoids the indeterminate classification where IBS = 0.
+    \begin{equation}
+\mathrm{IBS}_{k-1} \;\equiv
+\begin{cases}
+1,  & \text{if buyer-initiated trade},\\
+-1, & \text{if seller-initiated trade}.
+\end{cases}
+\label{eq:5}
+\end{equation}
+    
+       \item 
+
+    
+\end{itemize}
 
 
 

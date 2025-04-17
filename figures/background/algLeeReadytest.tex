@@ -1,0 +1,26 @@
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwData{Trade price ($P_t$), Midquote ($M_t$), Previous trade price ($P_{t-1}$), Previous IBS ($IBS_{t-1}$)}
+\KwResult{IBS (Initiated Buy-Sell indicator)}
+
+\If{$P_t > M_t$}{
+    $IBS_t \gets 1$ \tcp*{Buyer initiated}
+}
+\ElseIf{$P_t < M_t$}{
+    $IBS_t \gets -1$ \tcp*{Seller initiated}
+}
+\Else{ \tcp*{$P_t = M_t$ - apply tick test}
+    \If{$M_t > P_{t-1}$}{
+        $IBS_t \gets 1$ \tcp*{Buyer initiated}
+    }
+    \ElseIf{$M_t < P_{t-1}$}{
+        $IBS_t \gets -1$ \tcp*{Seller initiated}
+    }
+    \Else{ \tcp*{No price change between consecutive trades}
+        $IBS_t \gets IBS_{t-1}$ \tcp*{Use previous classification}
+    }
+}
+\Return{$IBS_t$}
+\caption{Trade Direction Algorithm (\citet{leeready1991})}
+\label{alg:IBS}
+\end{algorithm}
