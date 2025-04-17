@@ -43,7 +43,7 @@ where \(\varepsilon_k\) is independently but not identically distributed, and $X
 Noticeably, \citet{hausman1992}'s ordered probit model also accounts for conditional heteroskedasticity in $Z^*_k$. Intuitively, their model incorporates the clock-time effect where $Z^*_k$ can be modeled as increments of arithmetic Brownian motion as in the model of \citet{chofrees1988}. Let \(\Delta t_k\) be the time between trade $k$ and $k-1$, the variance is linear in \(\Delta t_k\):
 
 \begin{equation}
-X_k' \beta = \mu \Delta t_k, \quad \sigma_k^2 = \gamma^2 \Delta t_k,
+X_k' \beta = \mu \Delta t_k, \quad \sigma_k^2 = \gamma^2 \Delta t_k.
     \label{eq:4}
 \end{equation}
 
@@ -65,15 +65,25 @@ Our explanatory variables consist of:
 \label{eq:5}
 \end{equation}
     
-       \item 
-
-    
+       \item$lnV_{k-l}IBS_{k-l}$: Three lags of signed transformed dollar volume (l = 1, 2, 3). Volume of a trade is first set to the 99.5 percentile of the traded volume distribution, if it exceeds the 99.5 percentile. Then, the traded volume is multiplied with the transaction price (in dollars), and also divided by \$100. Afterward, we take the natural log of dollar volume. 
+       The interaction between transformed dollar volume and the buyer/seller-initiated indicator is taken into account to investigate the impact of trade direction on price. A positive coefficient may indicate that buyer-initiated trade would likely to move price up, and vice versa (\citet{hausman1992}, \citet{easleyohara1987}).
 \end{itemize}
 
+The complete specification of \(X_k' \beta\) is:
+\begin{align}
+X_k' \beta =\ & \beta_1 Z_{k-1} + \beta_2 Z_{k-2} + \beta_3 Z_{k-3} \nonumber \\
+& + \beta_4 IBS_{k-1} + \beta_5 IBS_{k-2} + \beta_6 IBS_{k-3} \nonumber \\
+& + \beta_7 \ln V_{k-1} \cdot IBS_{k-1} \nonumber \\
+& + \beta_8 \ln V_{k-2} \cdot IBS_{k-2} + \beta_9 \ln V_{k-3} \cdot IBS_{k-3}, \label{eq:6}
+\end{align}
+with variance 
 
+\begin{equation}
+\sigma_k^2 = \gamma^2 \Delta t_k.
+\label{eq:7}
+\end{equation}
 
-
-
+{\noindent\bfseries Conditional Distribution and Log-Likelihood Function}
 
 
 
