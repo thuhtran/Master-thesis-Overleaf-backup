@@ -114,6 +114,43 @@ Std. dev. & 0.9995\\
 {\noindent\bfseries Other Variables }
 
 
+\begin{table}[H]
+\centering
+\resizebox{1\textwidth}{!}{%
+\begin{threeparttable}
+\begin{tabular}{lrr}
+\toprule
+Statistic & This Thesis (Panel A) & \citet{hausman1992} \\
+\midrule
+\textbf{Signed transformed volume}\tnote{a}  & & \\
+Mean & -0.1183 & 0.1059 \\
+Std. dev. & 4.1303 & 6.1474 \\
+\textbf{Time between trades (seconds)} & & \\
+Mean & 3.0685 & 27.21 \\
+\addlinespace
+Std. dev. & 10.8139 & 34.13 \\
+\textbf{Bid/ask spread} & & \\
+Mean & 0.0343 & 1.9470 \\
+Std. dev. & 0.0311 & 1.4625 \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+    \small
+    \item[a] \citet{hausman1992} performs Box-Cox transformation for dollar volume and estimates the \(\lambda\) parameter via maximum likelihood. Their result for IBM is \(\lambda=0\), equivalent to natural log transformation. In this thesis, we simplify by directly taking natural log of dollar volume.
+  \end{tablenotes}
+\caption{Summary statistics: Signed transformed volume, Time between trades, and Bid/ask spread}
+\label{tab:table-6}
+\end{threeparttable}}
+\end{table}
+
+
+
+
+
+
+
+
+
 \section{Panel A: Market Microstructure Analysis}
 
 \section{Panel B: Forecasting Analysis}
