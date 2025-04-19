@@ -65,7 +65,7 @@ Panel B: Out-of-sample & November 1 - December 29, 2023          & 263,699 (14\%
     \end{tabular}%
   }
   \caption{Frequencies of Partition (Price Changes in Ticks)}
-  \label{tab:3}
+  \label{tab:table-3}
 \end{table}
 
 Besides, most of the trade occurs at either higher than or lower than mid-quote prices as similar to the results of \citet{hausman1992} or \citet{kim2014}.
@@ -85,16 +85,34 @@ Std. dev. & 0.0134\\
 \bottomrule
 \end{tabular}}
 \caption{Summary statistics: Price Changes}
-\label{tab:4}
+\label{tab:table-4}
 \end{table}
 
 
 
-
-
-
-
 {\noindent\bfseries Trade Direction }
+
+As mentioned in the previous chapter, the trade direction is determined via the procedure proposed by \citet{leeready1991} that incorporates two major steps. Firstly, the trade price is compared with the mid-quote to see if it is greater than mid-quote then it is buyer-initiated trade and vice versa, hereby noted as "mid-quote rule". Secondly, in case the price is equal to the mid-quote then a "tick-test" is applied. The "tick-test" will then compare the current trade with the previous trade's price. If there is again no difference between the two consecutive price then the sign of the last non-zero change will be selected. \citet{hausman1992} adopts only the "mid-quote rule" and thus has the third classification of "indeterminate" trade $IBS = 0$. If we would use the same procedure, our buyer-initiated classfication would simply be the percentage of trade with price > mid-quote (i.e. 40.07\%), and seller-initiated classification would be 43.28\%. Hence, our final results showed in \tabref{tab:table-5} with roughly similar proportion (48.43\% buyer-initiated versus 51.57\% seller-initiated) are reasonable.
+
+
+\begin{table}[H]
+\centering
+\resizebox{0.4\textwidth}{!}{%
+\begin{tabular}{lr}
+\toprule
+\textbf{Trade direction, $IBS_k$ }& \\
+Buyer-initiated (\%) & 48.43\\
+Seller-initiated (\%) & 51.57\\
+Mean & -0.0313\\
+Std. dev. & 0.9995\\
+\bottomrule
+\end{tabular}}
+\caption{Summary statistics: Trade Direction}
+\label{tab:table-5}
+\end{table}
+
+{\noindent\bfseries Other Variables }
+
 
 \section{Panel A: Market Microstructure Analysis}
 
