@@ -30,24 +30,11 @@ Panel B: Out-of-sample & November 1 - December 29, 2023          & 263,699 (14\%
 \section{Descriptive Statistics (Full Sample)}
 
 {\noindent\bfseries Price Change }
-\begin{table}[htbp]
-\centering
-\begin{tabular}{ll}
-\toprule
-\textbf{Statistic} & \textbf{IBM}\\
-\midrule
-\textbf{\% trades at prices:} & \\
-> Midquote & 40.07\\
-= Midquote & 16.65\\
-< Midquote & 43.28\\
-\textbf{Price change, $Z_k$} & \\
-Mean & 0.0000\\
-Std. dev. & 0.0134\\
-\bottomrule
-\end{tabular}
-\caption{Summary statistics: Price Changes}
-\label{tab:3}
-\end{table}
+
+\figref{fig:price-change-2023} depicts the histogram of transaction price changes for IBM on NYSE in 2023 by \textit{tick }(equivalent to \$0.01 or 1 cent). The distribution of price changes seems to be almost symmetric around zero, which is expected for a very liquid stock like IBM. Moreover, the histogram shows that the majority of mass lies in the range of -4 to +4-tick changes. In order to also account for more extreme cases, we could choose the number of state \textit{m} = 14, including the changes from <-6 to >+6-tick. 
+
+
+
 
 \begin{figure}[htbp]
     \centering
@@ -56,6 +43,58 @@ Std. dev. & 0.0134\\
     \label{fig:price-change-2023}
 \end{figure}
 
+
+
+
+
+
+
+\begin{table}[h]
+  \centering
+  \setlength{\tabcolsep}{4pt} 
+  \resizebox{\textwidth}{!}{%
+    \begin{tabular}{@{} r *{14}{r} @{}}
+      \toprule
+      \textbf{Category}      & 1    & 2       & 3       & 4       & 5       & 6       & 7       & 8       & 9       & 10   
+      & 11      & 12      & 13      & 14      \\
+      
+      \textbf{Price Changes}   & <–6  & [–6,–5) & [–5,–4) & [–4,–3) & [–3,–2) & [–2,–1) & [–1,0)  & [0,1)   & [1,2)   & [2,3)   & [3,4)   & [4,5)   & [5,6)   & \geq6     \\
+    
+      \textbf{Percentage} & 0.31\% & 0.16\%   & 0.33\%   & 1.83\%   & 2.68\%   & 8.18\%   & 11.08\%  & 62.00\%  & 7.99\%   & 2.68\%   & 1.89\%   & 0.34\%   & 0.17\%   & 0.34\%  \\
+      \bottomrule
+    \end{tabular}%
+  }
+  \caption{Frequencies of Partition (Price Changes in Ticks)}
+  \label{tab:3}
+\end{table}
+
+Besides, most of the trade occurs at either higher than or lower than mid-quote prices as similar to the results of \citet{hausman1992} or \citet{kim2014}.
+
+\begin{table}[H]
+\centering
+\resizebox{0.25\textwidth}{!}{%
+\begin{tabular}{ll}
+\toprule
+\textbf{\% trades at prices} & \\
+> Midquote & 40.07\\
+= Midquote & 16.65\\
+< Midquote & 43.28\\
+\textbf{Price change, $Z_k$} & \\
+Mean & 0.0000\\
+Std. dev. & 0.0134\\
+\bottomrule
+\end{tabular}}
+\caption{Summary statistics: Price Changes}
+\label{tab:4}
+\end{table}
+
+
+
+
+
+
+
+{\noindent\bfseries Trade Direction }
 
 \section{Panel A: Market Microstructure Analysis}
 
