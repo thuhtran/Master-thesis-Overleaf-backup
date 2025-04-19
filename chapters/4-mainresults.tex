@@ -150,14 +150,89 @@ Std. dev. & 0.0311 & 1.4625 \\
     \small
     \item[a] \citet{hausman1992} performs Box-Cox transformation for dollar volume and estimates the \(\lambda\) parameter via maximum likelihood. Their result for IBM is \(\lambda=0\), equivalent to natural log transformation. In this thesis, we simplify by directly taking natural log of dollar volume.
   \end{tablenotes}
-\caption{Summary statistics: Signed transformed volume, Time between trades, and Bid/ask spread}
-\label{tab:table-6}
+
 \end{threeparttable}}
+\caption{Summary statistics: Other Variables}
+\label{tab:table-6}
 \end{table}
 
 
 
 
 \section{Panel A: Market Microstructure Analysis}
+
+{\noindent\bfseries Maximum Likelihood Estimates  }
+
+\begin{table}[H]
+\centering
+\begin{center}
+\resizebox{\textwidth}{!}{%
+\begin{threeparttable}
+\begin{tabular}{lrlrlr}
+\toprule
+\multicolumn{1}{c}{\textbf{Parameter}} & \multicolumn{1}{c}{\textbf{Value}} & \multicolumn{1}{c}{\textbf{Thresholds}} & \multicolumn{1}{c}{\textbf{Value}} & \multicolumn{1}{c}{\textbf{Statistics}} & \multicolumn{1}{c}{\textbf{Value}} \\
+\midrule
+$\beta_1$ & 0.0319$^{***}$ & $\alpha_1$ & -1.9050$^{***}$ & AIC & 4884659.97 \\
+ & (0.0003) & & (0.0036) & & \\
+ 
+$\beta_2$ & 0.0163$^{***}$ & $\alpha_2$ & -1.7981$^{***}$ & Log Likelihood & -2442306.98 \\
+ & (0.0003) & & (0.0031) & & \\
+ 
+$\beta_3$ & 0.0061$^{***}$ & $\alpha_3$ & -1.6489$^{***}$ & Num. obs. & 1904393 \\
+ & (0.0003) & & (0.0026) & & \\
+ 
+$\beta_4$ & -0.0433$^{***}$ & $\alpha_4$ & -1.2736$^{***}$ & Iterations & 8 \\
+ & (0.0011) & & (0.0017) & & \\
+ 
+$\beta_5$ & 0.0149$^{***}$ & $\alpha_5$ & -1.0251$^{***}$ & McFadden's R$^2$ & 0.0743 \\
+ & (0.0011) & & (0.0014) & & \\
+ 
+$\beta_6$ & 0.0064$^{***}$ & $\alpha_6$ & -0.6611$^{***}$ & & \\
+ & (0.0011) & & (0.0009) & & \\
+ 
+$\beta_7$ & 0.0114$^{***}$ & $\alpha_7$ & -0.3961$^{***}$ & & \\
+ & (0.0003) & & (0.0007) & & \\
+ 
+$\beta_8$ & 0.0016$^{***}$ & $\alpha_8$ & 0.6121$^{***}$ & & \\
+ & (0.0003) & & (0.0009) & & \\
+ 
+$\beta_9$ & 0.0009$^{***}$ &  $\alpha_9$ & 0.9822$^{***}$ & & \\
+ & (0.0003) & & (0.0013) & & \\
+ 
+$\gamma$ \tnote{a}& 0.1424$^{***}$ & $\alpha_{10}$ & 1.2328$^{***}$ & & \\
+ & (0.0002) & & (0.0017) & & \\
+ 
+ & & $\alpha_{11}$ & 1.6137$^{***}$ & & \\
+ & & & (0.0025) & & \\
+ 
+ & & $\alpha_{12}$ & 1.7622$^{***}$ & & \\
+ & & & (0.0030) & & \\
+ 
+ & & $\alpha_{13}$ & 1.8751$^{***}$ & & \\
+ & & & (0.0035) & & \\
+\bottomrule
+\multicolumn{6}{l}{\scriptsize{$^{***}p<0.001$; $^{**}p<0.01$; $^{*}p<0.05$}}
+\end{tabular}
+
+\begin{tablenotes}
+    \small
+    \item[a] Note: Since the \texttt{oglmx} package only takes the standard deviation argument in the form of \(\sigma=exp(\cdot)\), we take natural log of time between trade variable before estimate the model i.e., \(\sigma=exp(ln(x)) = x\).
+  \end{tablenotes}
+
+
+\end{threeparttable}}
+\caption{Ordered Probit Model Estimation}
+\label{tab:table-7}
+\end{center}
+\end{table}
+
+
+
+{\noindent\bfseries Impact of Sequence-of-trade }
+
+{\noindent\bfseries Impact of Trade Size }
+
+
+
 
 \section{Panel B: Forecasting Analysis}
