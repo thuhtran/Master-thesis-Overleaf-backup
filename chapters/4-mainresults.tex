@@ -163,6 +163,22 @@ Std. dev. & 0.0311 & 1.4625 \\
 
 {\noindent\bfseries Maximum Likelihood Estimates  }
 
+\tabref{tab:table-7} presents the maximum likelihood estimates for our ordered probit model. Thirteen partition thresholds for fourteen categories, as well as all parameters for explanatory variables and conditional variance, are statistically significant. While \citet{hausman1992}'s results show negative sign of all lagged price changes $Z_k$ and argue that it might be the sign of price reversal, the same conclusion could not be found for our results.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \begin{table}[H]
 \centering
 \begin{center}
@@ -172,34 +188,34 @@ Std. dev. & 0.0311 & 1.4625 \\
 \toprule
 \multicolumn{1}{c}{\textbf{Parameter}} & \multicolumn{1}{c}{\textbf{Value}} & \multicolumn{1}{c}{\textbf{Thresholds}} & \multicolumn{1}{c}{\textbf{Value}} & \multicolumn{1}{c}{\textbf{Statistics}} & \multicolumn{1}{c}{\textbf{Value}} \\
 \midrule
-$\beta_1$ & 0.0319$^{***}$ & $\alpha_1$ & -1.9050$^{***}$ & AIC & 4884659.97 \\
+$\beta_1$: $Z_{-1}$ & 0.0319$^{***}$ & $\alpha_1$ & -1.9050$^{***}$ & AIC & 4884659.97 \\
  & (0.0003) & & (0.0036) & & \\
  
-$\beta_2$ & 0.0163$^{***}$ & $\alpha_2$ & -1.7981$^{***}$ & Log Likelihood & -2442306.98 \\
+$\beta_2$: $Z_{-2}$ & 0.0163$^{***}$ & $\alpha_2$ & -1.7981$^{***}$ & Log Likelihood & -2442306.98 \\
  & (0.0003) & & (0.0031) & & \\
  
-$\beta_3$ & 0.0061$^{***}$ & $\alpha_3$ & -1.6489$^{***}$ & Num. obs. & 1904393 \\
+$\beta_3$: $Z_{-3}$ & 0.0061$^{***}$ & $\alpha_3$ & -1.6489$^{***}$ & Num. obs. & 1904393 \\
  & (0.0003) & & (0.0026) & & \\
  
-$\beta_4$ & -0.0433$^{***}$ & $\alpha_4$ & -1.2736$^{***}$ & Iterations & 8 \\
+$\beta_4$: $IBS_{-1}$ & -0.0433$^{***}$ & $\alpha_4$ & -1.2736$^{***}$ & Iterations & 8 \\
  & (0.0011) & & (0.0017) & & \\
  
-$\beta_5$ & 0.0149$^{***}$ & $\alpha_5$ & -1.0251$^{***}$ & McFadden's R$^2$ & 0.0743 \\
+$\beta_5$: $IBS_{-2}$ & 0.0149$^{***}$ & $\alpha_5$ & -1.0251$^{***}$ & McFadden's R$^2$ & 0.0743 \\
  & (0.0011) & & (0.0014) & & \\
  
-$\beta_6$ & 0.0064$^{***}$ & $\alpha_6$ & -0.6611$^{***}$ & & \\
+$\beta_6$: $IBS_{-3}$ & 0.0064$^{***}$ & $\alpha_6$ & -0.6611$^{***}$ & & \\
  & (0.0011) & & (0.0009) & & \\
  
-$\beta_7$ & 0.0114$^{***}$ & $\alpha_7$ & -0.3961$^{***}$ & & \\
+$\beta_7$: \(lnV_{-1}\cdot IBS_{-1}\) & 0.0114$^{***}$ & $\alpha_7$ & -0.3961$^{***}$ & & \\
  & (0.0003) & & (0.0007) & & \\
  
-$\beta_8$ & 0.0016$^{***}$ & $\alpha_8$ & 0.6121$^{***}$ & & \\
+$\beta_8$: \(lnV_{-2}\cdot IBS_{-2}\) & 0.0016$^{***}$ & $\alpha_8$ & 0.6121$^{***}$ & & \\
  & (0.0003) & & (0.0009) & & \\
  
-$\beta_9$ & 0.0009$^{***}$ &  $\alpha_9$ & 0.9822$^{***}$ & & \\
+$\beta_9$: \(lnV_{-3}\cdot IBS_{-3}\) & 0.0009$^{***}$ &  $\alpha_9$ & 0.9822$^{***}$ & & \\
  & (0.0003) & & (0.0013) & & \\
  
-$\gamma$ \tnote{a}& 0.1424$^{***}$ & $\alpha_{10}$ & 1.2328$^{***}$ & & \\
+$\gamma$: \(\Delta t/100\) \tnote{a}& 0.1424$^{***}$ & $\alpha_{10}$ & 1.2328$^{***}$ & & \\
  & (0.0002) & & (0.0017) & & \\
  
  & & $\alpha_{11}$ & 1.6137$^{***}$ & & \\
@@ -216,7 +232,7 @@ $\gamma$ \tnote{a}& 0.1424$^{***}$ & $\alpha_{10}$ & 1.2328$^{***}$ & & \\
 
 \begin{tablenotes}
     \small
-    \item[a] Note: Since the \texttt{oglmx} package only takes the standard deviation argument in the form of \(\sigma=exp(\cdot)\), we take natural log of time between trade variable before estimate the model i.e., \(\sigma=exp(ln(x)) = x\).
+    \item[a] Note: Since the \texttt{oglmx} package \citep{oglmx} only takes the standard deviation argument in the form of \(\sigma=exp(\cdot)\), we take natural log of time between trade variable before estimate the model i.e., \(\sigma=exp(ln(x)) = x\).
   \end{tablenotes}
 
 
@@ -228,11 +244,70 @@ $\gamma$ \tnote{a}& 0.1424$^{***}$ & $\alpha_{10}$ & 1.2328$^{***}$ & & \\
 
 
 
-{\noindent\bfseries Impact of Sequence-of-trade }
+{\noindent\bfseries Impact of Sequence of Trade on the Next Price Change}
 
-{\noindent\bfseries Impact of Trade Size }
+As part of a study to explore the impact of trading volume on security price, \citet{easleyohara1987} propose an "information-effects" theory. In this model, the price process will not follow a Markov process i.e. information of the entire sequence of trade is essential to calculate the distribution of the next price, and not only the current price. 
+
+Putting this theory in context of our ordered probit model, \citet{hausman1992} discuss that if the entire sequence of trade would have an impact on the conditional mean of the next price, then one simple case we could test is whether the coefficients ($\beta_1$, $\beta_2$, $\beta_3$) of the lagged price changes different to each other or not. For example, in case the sequence of trade matters, the effect of price change sequence of -1/1/-1 (total change -1 tick) on the conditional mean would be different than 1/-1/-1 (total change also -1 tick). The formulation of the test statistic used by \citet{hausman1992} is similar to a joint Wald test for a linear hypothesis \citep{wooldridge2010}:
+
+\[
+\begin{aligned}
+H_0 &: \beta_1 = \beta_2 = \beta_3, \\
+H_1 &: \text{At least one of } \beta_1, \beta_2, \beta_3 \text{ differs}.
+\end{aligned}
+\]
+    \begin{tabular}{l}
+        \textbf{Restriction:}\\
+        $Z_{-1} - Z_{-2} = 0$,\\
+        $Z_{-2} - Z_{-3} = 0$.\\
+        \textbf{Model 1:} restricted model\\
+        \textbf{Model 2:} full model, as in Equation (4)
+    \end{tabular}
+    
+\begin{table}[htbp]
+    \centering
+    \vspace{0.5em}
+    \begin{tabular}{crrl}
+        \toprule
+        Df & $\chi^2$ & Pr($>$$\chi^2$) \\
+        \midrule
+         2 & 2823.1 & $<$ 2.2e-16 *** \\ 
+         \bottomrule
+        \multicolumn{3}{l}{$^{***}p < 0.001$; $^{**}p < 0.01$; $^{*}p < 0.05$}
+    \end{tabular}
+        \caption{Sequence of Trade: Linear Hypothesis Test}
+    \label{tab:table-8}
+\end{table}
+
+With this test result, we could reject the null hypothesis at 0.1\% significance level. This finding is consistent with \citet{hausman1992}, and therefore also supports the "information-effects" theory of \citet{easleyohara1987}.
+
+
+
+{\noindent\bfseries Impact of Trade Size on the Next Price Change}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 \section{Panel B: Forecasting Analysis}
+
+{\noindent\bfseries In-sample }
+
+{\noindent\bfseries Out-of-sample }
