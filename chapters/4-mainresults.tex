@@ -261,7 +261,7 @@ H_1 &: \text{At least one of } \beta_1, \beta_2, \beta_3 \text{ differs}.
         $Z_{-1} - Z_{-2} = 0$,\\
         $Z_{-2} - Z_{-3} = 0$.\\
         \textbf{Model 1:} restricted model\\
-        \textbf{Model 2:} full model, as in Equation (4)
+        \textbf{Model 2:} full model, as in \eqref{eq:6}
     \end{tabular}
     
 \begin{table}[htbp]
@@ -284,6 +284,27 @@ With this test result, we could reject the null hypothesis at 0.1\% significance
 
 
 {\noindent\bfseries Impact of Trade Size on the Next Price Change}
+
+In our model, the impact of trade size or volume is measured with variable \(lnV\cdot IBS \). The maximum likelihood estimates in \tabref{tab:table-7} show consistent results with \citet{hausman1992} that the coefficients are significantly positive, and the most recent transaction has the most impact. 
+
+However, the estimated coefficients relate to the impact on the conditional mean of the latent variable $Z_k^*$. \citet{hausman1992} instead attempt to make inference on the impact of trade size on the observed price change $Z_k$. In general, they proceed to calculate the conditional mean for different scenarios following these steps:
+\begin{enumerate}
+    \item \textbf{Determining specific values for explanatory variables $X_k$}: since our subject-of-interest is the impact of the last trade size, all other variables should be set to identical values while the first-lag of volume varies. The values of these variables are fixed at:
+    \begin{itemize}
+    \item $V_{-2}$ = $V_{-3}$ = median of dollar volume $\cdot$ $\frac{1}{100}$. 
+    (Note that for lagged volumes, although in the original model we have the interaction term between volume and buyer/seller-initiated trade indicator $IBS_k$, here we only include lags of volumes.);
+    \item $IBS_{-1}$ = $IBS_{-2}$ = $IBS_{-3}$ = 1;
+    \item $\Delta t_k$ = sample mean;
+    \end{itemize}
+    \item \textbf{Determining sequence-of-trade scenarios}: as the sequence of price change does matter to the conditional mean, we would need to make assumption on the sequences we would like to investigate. Following \citet{hausman1992} there are two cases:
+    \begin{itemize}
+    \item Increasing price, where $Z_{-1}$ = $Z_{-2}$ = $Z_{-3}$ = +1
+    \item Constant price, where $Z_{-1}$ = $Z_{-2}$ = $Z_{-3}$ = 0;
+    \end{itemize}
+    \item \textbf{Calculating the probabilities}: by substituting the estimated coefficients, with the aforementioned fixed values of $X_k$, based on the conditional distribution \eqref{eq:8};
+    \item \textbf{Finally, calculating the expected price};
+\end{enumerate}
+
 
 
 
