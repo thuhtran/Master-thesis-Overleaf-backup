@@ -305,6 +305,14 @@ However, the estimated coefficients relate to the impact on the conditional mean
     \item \textbf{Finally, calculating the expected price};
 \end{enumerate}
 
+\tabref{tab:table-9} report the computed conditional means for each specific scenario. The first upper part of the table shows the price impact of trade size in ticks. Since our data in 2023 has much smaller tick size (1 tick = \$0.01) than in 1988 data of \citet{hausman1992} (1 tick = \$0.125), the base price in this thesis is \$500 instead of \$5,000. Following the conditional mean of \$500 are the changes in conditional mean for the next additional dollar volume (e.g. \(\Delta E[Z_k]\) of \$1,000 depicts the change of conditional mean when buying an additional \$500). Moreover, the conditional mean of \$500 is negative, which might be effect by the bid/ask bounce. \citet{hausman1992} argue that while we assume all three previous trades are buys ($IBS_k$ = +1), the next trade could be a sell leading to the negative sign. This effect could be dismissed by calculating the difference in conditional mean for the larger dollar volume than the base \$500, and hence we could still capture the price impact effects of trade size. Our results for both increasing- and constant-price-sequence show the consistent message with their study: a larger trade size would have larger price impact.
+
+Along with the price impact measured in ticks, the price impact in percent of \tabref{tab:table-9} shows the changes as the percentages of the average of the max (\$166.34) and min (\$120.55) trade price. As IBM is a very liquid stock, it is expected that the trade size would have very little impact on price. Moreover, \figref{fig:figure-2} plots the price impact  in percent as a function of the dollar volume i.e., price response function for our IBM stock, conditioning on the increasing-price-sequence as well as the last three trades are buys. A very flat curve again illustrates the high liquid characteristic of IBM \citep{hausman1992}.
+
+
+
+
+
 
 
 \begin{table}[htbp]
@@ -359,24 +367,15 @@ $\Delta E[Z_k]$      & 5{,}500   &   $0.0071$ \\
 
 
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=1\textwidth]{figures/main_results/price_response.png}
-    \caption{Price Response}
-    \label{fig:price-response}
+    \includegraphics[width=1.1\textwidth]{figures/main_results/price_response.png}
+    \caption{Price Response Function for IBM on NYSE, 2023.}
+    \label{fig:figure-2}
 \end{figure}
 
 
-
-
-
-
-
-
-
-
-
-
+\clearpage
 
 
 
