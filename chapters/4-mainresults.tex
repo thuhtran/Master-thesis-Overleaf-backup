@@ -455,23 +455,47 @@ $\gamma$: \(\Delta t/100\) & 0.1432$^{***}$ & $\alpha_{10}$ & 1.2210$^{***}$ & &
     \label{fig:figure-3}
 \end{figure}
 
-To have an easier interpretation regarding the transaction price movement, we could cluster our 14 categories into three major movements: downward movement (category 1 to 7), no change (category 8), and upward movement (category 9 to 14). (The definition of each category could be reviewed in \tabref{tab:table-3}.) \figref{fig:figure-3} illustrates the average monthly fitted probability for the in-sample observations. The sum of fitted probability of falling into each category for each observation equals to one (1). Accordingly, the \textit{no movement} category has the highest fitted probability. Nevertheless, main evaluation metrics for in-sample prediction would be discussed together with the following out-of-sample results.
+To have a simpler illustration regarding the transaction price movement, we could cluster our 14 categories into three major movements: downward movement (category 1 to 7), no change (category 8), and upward movement (category 9 to 14). (The definition of each category could be reviewed in \tabref{tab:table-3}.) \figref{fig:figure-3} illustrates the average monthly fitted probability for the in-sample observations. The sum of fitted probability of falling into each category for each observation equals to one (1). Accordingly, the \textit{no movement} category has the highest fitted probability. Nevertheless, main evaluation metrics for in-sample prediction would be discussed together with the following out-of-sample results.
 
 
 
 
 {\noindent\bfseries Out-of-sample }
 
+\tabref{tab:table-11} presents the forecasting performance of both in- and out-of-sample cases. The prediction accuracy is relatively low for both cases. Noticeably, the multiclass AUC values are only slightly above 0.5, which means the model barely performs better than a random guess. 
 
 
 
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\multicolumn{1}{c}{Metric} & \multicolumn{1}{l}{\textbf{\% Accuracy}} & \multicolumn{1}{l}{\textbf{Hand-Till Multiclass AUC}} \\ \midrule
+\textbf{In-sample}         & 61.77 \%                                 & 0.5732                                                \\
+\textbf{Out-of-sample}     & 63.54 \%                                 & 0.5697                                                \\ \bottomrule
+\end{tabular}
+\caption{Forecasts Evaluation for In- and Out-of-sample.}
+\label{tab:table-11}
+\end{table}
 
+
+One possible culprit for this poor performance might be the over-predicting of the \textit{no change} category. In \figref{fig:figure-4}, we could observe that more than 60\% of fitted probabilities are falling into \textit{no change}. Previous studies that employed similar ordered probit models also capture this tendency, with more than 50\% prediction as \textit{no change} \citep{yangparwada2012, kim2014}. 
 
 
 \begin{figure}[H]
     \centering
-    \resizebox{0.85\textwidth}{!}{%
+    \resizebox{0.6\textwidth}{!}{%
 \includegraphics{figures/main_results/monthly_probabilities_all.pdf}}
     \caption{Aggregated Monthly Fitted Probability for In-sample (January - October 2023) \& Out-of-sample (November - December 2023).}
     \label{fig:figure-4}
+\end{figure}
+
+\figref{fig:figure-5} again shows the major miss-classification of other category into category 8 i.e. \textit{no change in price}. In general, our simplified ordered probit model seems to not be able to handle the class imbalance, as 62\% of our data is in category 8 (see \tabref{tab:table-3}).
+
+\begin{figure}[H]
+    \centering
+    \resizebox{0.85\textwidth}{!}{%
+\includegraphics{figures/main_results/overfitting_compare.pdf}}
+    \caption{Mean Probability by Prediction Class of In- and Out-of-sample.}
+    \label{fig:figure-5}
 \end{figure}

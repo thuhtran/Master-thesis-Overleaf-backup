@@ -2,6 +2,133 @@
 
 \chapter{Additional Tables}
 
+\section{Covid-19 Period}
+
+
+\begin{table}[H]
+\centering
+\resizebox{0.25\textwidth}{!}{%
+\begin{tabular}{ll}
+\toprule
+\textbf{\% trades at prices} & \\
+> Midquote & 48.32\\
+= Midquote & 6.24\\
+< Midquote & 45.44\\
+\textbf{Price change, $Z_k$} & \\
+Mean & 0.0000\\
+Std. dev. & 0.0294\\
+\bottomrule
+\end{tabular}}
+\caption{Summary statistics: Price Changes (February-April 2020).}
+\label{tab:table-13}
+\end{table}
+
+
+
+
+\begin{table}[H]
+\centering
+\resizebox{0.3\textwidth}{!}{%
+\begin{tabular}{lr}
+\toprule
+\textbf{Trade direction, $IBS_k$ }& \\
+Buyer-initiated (\%) & 51.45\\
+Seller-initiated (\%) & 48.55\\
+Mean & 0.0290\\
+Std. dev. & 0.9996\\
+\bottomrule
+\end{tabular}}
+\caption{Summary statistics: Trade Direction (February-April 2020).}
+\label{tab:table-15}
+\end{table}
+
+
+\begin{table}[H]
+\centering
+\resizebox{0.75\textwidth}{!}{%
+\begin{tabular}{lrr}
+\toprule
+Statistic & This Thesis (Panel C) & \citet{hausman1992} \\
+\midrule
+\textbf{Signed transformed volume}  & & \\
+Mean & 0.1188 & 0.1059 \\
+Std. dev. & 4.1146 & 6.1474 \\
+\textbf{Time between trades (seconds)} & & \\
+Mean & 1.8410 & 27.21 \\
+Std. dev. & 4.7175 & 34.13 \\
+\textbf{Bid/ask spread} & & \\
+Mean & 0.0877 & 1.9470 \\
+Std. dev. & 0.0795 & 1.4625 \\
+\bottomrule
+\end{tabular}}
+\caption{Summary statistics: Other Variables (February-April 2020).}
+\label{tab:table-16}
+\end{table}
+
+
+\begin{table}[H]
+\centering
+\begin{center}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrlrlr}
+\toprule
+\multicolumn{1}{c}{\textbf{Parameter}} & \multicolumn{1}{c}{\textbf{Value}} & \multicolumn{1}{c}{\textbf{Thresholds}} & \multicolumn{1}{c}{\textbf{Value}} & \multicolumn{1}{c}{\textbf{Statistics}} & \multicolumn{1}{c}{\textbf{Value}} \\
+\midrule
+$\beta_1$: $Z_{-1}$ & 0.0142$^{***}$ & $\alpha_1$ & -1.0118$^{***}$ & AIC & 2597221.9548 \\
+ & (0.0002) & & (0.0023) & & \\
+ 
+$\beta_2$: $Z_{-2}$ & 0.0066$^{***}$ & $\alpha_2$ & -0.9589$^{***}$ & Log Likelihood & -1298587.9774 \\
+ & (0.0002) & & (0.0021) & & \\
+ 
+$\beta_3$: $Z_{-3}$ & 0.0024$^{***}$ & $\alpha_3$ & -0.8152$^{***}$ & Num. obs. & 786350 \\
+ & (0.0002) & & (0.0018) & & \\
+ 
+$\beta_4$: $IBS_{-1}$ & -0.0087$^{***}$ & $\alpha_4$ & -0.6269$^{***}$ & Iterations & 9 \\
+ & (0.0013) & & (0.0015) & & \\
+ 
+$\beta_5$: $IBS_{-2}$ & 0.0197$^{***}$ & $\alpha_5$ & -0.5492$^{***}$ & McFadden's R$^2$ & 0.0914 \\
+ & (0.0013) & & (0.0013) & & \\
+ 
+$\beta_6$: $IBS_{-3}$ & 0.0108$^{***}$ & $\alpha_6$ & -0.3395$^{***}$ & & \\
+ & (0.0012) & & (0.0009) & & \\
+ 
+$\beta_7$: \(lnV_{-1}\cdot IBS_{-1}\) & 0.0082$^{***}$ & $\alpha_7$ & -0.2522$^{***}$ & & \\
+ & (0.0003) & & (0.0008) & & \\
+ 
+$\beta_8$: \(lnV_{-2}\cdot IBS_{-2}\) & -0.0013$^{***}$ & $\alpha_8$ & 0.3323$^{***}$ & & \\
+ & (0.0003) & & (0.0009) & & \\
+ 
+$\beta_9$: \(lnV_{-3}\cdot IBS_{-3}\) & -0.0007$^{*}$ &  $\alpha_9$ & 0.5441$^{***}$ & & \\
+ & (0.0003) & & (0.0013) & & \\
+ 
+$\gamma$: \(\Delta t/100\) \tnote{a}& 0.2013$^{***}$ & $\alpha_{10}$ & 0.6240$^{***}$ & & \\
+ & (0.0004) & & (0.0015) & & \\
+ 
+ & & $\alpha_{11}$ & 0.8135$^{***}$ & & \\
+ & & & (0.0018) & & \\
+ 
+ & & $\alpha_{12}$ & 0.9546$^{***}$ & & \\
+ & & & (0.0021) & & \\
+ 
+ & & $\alpha_{13}$ & 1.0064$^{***}$ & & \\
+ & & & (0.0023) & & \\
+\bottomrule
+\multicolumn{6}{l}{\scriptsize{$^{***}p<0.001$; $^{**}p<0.01$; $^{*}p<0.05$}}
+\end{tabular}
+}
+\caption{Ordered Probit Model Estimation (February-April 2020).}
+\label{tab:table-17}
+\end{center}
+\end{table}
+
+
+
+\section{2008 Financial Crisis}
+
+
+
+
+
 \chapter{Additional Algorithm}
 
 \input{figures/background/algLeeReadytest}
