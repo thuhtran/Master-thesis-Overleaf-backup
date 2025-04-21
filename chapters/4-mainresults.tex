@@ -293,7 +293,7 @@ However, the estimated coefficients relate to the impact on the conditional mean
     \begin{itemize}
     \item $V_{-2}$ = $V_{-3}$ = median of dollar volume $\cdot$ $\frac{1}{100}$. 
     (Note that for lagged volumes, although in the original model we have the interaction term between volume and buyer/seller-initiated trade indicator $IBS_k$, here we only include lags of volumes.);
-    \item $IBS_{-1}$ = $IBS_{-2}$ = $IBS_{-3}$ = 1;
+    \item $IBS_{-1}$ = $IBS_{-2}$ = $IBS_{-3}$ = 1 (Assuming the last three transactions are buy-initiated trades);
     \item $\Delta t_k$ = sample mean;
     \end{itemize}
     \item \textbf{Determining sequence-of-trade scenarios}: as the sequence of price change does matter to the conditional mean, we would need to make assumption on the sequences we would like to investigate. Following \citet{hausman1992} there are two cases:
@@ -359,7 +359,12 @@ $\Delta E[Z_k]$      & 5{,}500   &   $0.0071$ \\
 
 
 
-
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\textwidth]{figures/main_results/price_response.png}
+    \caption{Price Response}
+    \label{fig:price-response}
+\end{figure}
 
 
 
