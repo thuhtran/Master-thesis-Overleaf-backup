@@ -1,6 +1,7 @@
 \chapter{Related Works}\label{chap:relatedwork}
-%Give a brief overview of the work relevant for your thesis. 
-\todo{chapter intro Explain the math and notation.}
+
+In this Chapter, the related studies on stock price movement prediction are presented. The literature review first gives an overview on methods developed to forecast stock price movement, before focusing on publications that are relevant to probit/ordered probit models. Afterwards the Chapter discusses the most important characteristics of high frequency financial data, and concludes with a glance on market microstructure studies. 
+\\
 
 {\bfseries Stock Price Movement Predictability}
 
@@ -32,14 +33,18 @@ On the other hand, the second strand, including studies by \citet{nyberg2011}, \
   rowhead = 1,
   lastfoot = {
   \hline
-  % Empty row to ensure full-width line
   & & &\\
 },
 }
 \hline
 \textbf{Study} & \textbf{Models} & \textbf{Data Frequency} & \textbf{Key Findings} \\
 \hline
-\citet{hausman1992} & Ordered probit model & Transaction (tick) level price changes & The ordered probit model of this study captures discretness of price changes (clustering on eigths of a dollar). Sequence of past price changes and order flows (whether it is buyer-initiated or seller initiated) do have an impact on transactional prices. \\ 
+\textit{This thesis} & \textit{Ordered probit model} & \textit{Transaction (tick) level price changes }& \textit{Key Objectives: investigating the impact of sequence of trade and trade size on price, and the forecasting performance of the model.}
+
+
+\\
+
+\citet{hausman1992} & Ordered probit model & Transaction (tick) level price changes & The ordered probit model of this study captures discretness of price changes (clustering on eigths of a dollar). Sequence of past price changes and order flows (whether it is buyer-initiated or seller initiated), as well as trade size, do have an impact on transactional prices. \\ 
 
 \citet{yangparwada2012} & Ordered probit model with GARCH(2,2) specification for residual series & Transaction (tick) level price changes & The model has an average of 71\% accuracy rate in the forecasting exercises both in- and out-of-sample. Dominant buying transactions in the past would increase the probability of price rise, while dominant selling transaction would increase the probability of the price to fall. Volume at the best bid price would have positive impact on price, and in the other way round, the volume at the best ask price have a negative impact. Conditional durations have negative effect on price, suggesting by the joint negative sign of all stocks. \\
 
@@ -66,5 +71,4 @@ For out-of-sample results, the best performing model is the "error correction" d
 \par
 
 {\noindent\bfseries High Frequency Financial Data \& Market Microstructure}
-\extend{ Write more when finalize related market microstructure topics}
-abc
+
