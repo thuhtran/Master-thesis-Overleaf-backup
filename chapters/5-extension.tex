@@ -185,3 +185,89 @@ Panel F: Out-of-sample & October 20 - October 31, 2008          & 118,174 (23\% 
   \label{tab:table-23}
 \end{table}
 
+\begin{table}[htbp]
+    \centering
+    \vspace{0.5em}
+    \begin{tabular}{crrl}
+        \toprule
+        Df & $\chi^2$ & Pr($>$$\chi^2$) \\
+        \midrule
+         2 & 135.71 & $<$ 2.2e-16 *** \\ 
+         \bottomrule
+        \multicolumn{3}{l}{$^{***}p < 0.001$; $^{**}p < 0.01$; $^{*}p < 0.05$}
+    \end{tabular}
+        \caption{Sequence of Trade: Linear Hypothesis Test (September-October 2008).}
+    \label{tab:table-27}
+\end{table}
+
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lrr}
+\toprule
+ & \multicolumn{1}{c}{\$Volume} & \multicolumn{1}{r}{Impact} \\
+\midrule
+\multicolumn{3}{l}{\textbf{Increasing price sequence (1/1/1)}} \\
+\addlinespace[0.5ex]
+\multicolumn{3}{l}{\emph{Price impact in ticks}} \\
+E$[Z_k]$             &  500   &  $-0.1707$ \\
+$\Delta E[Z_k]$      & 1{,}000   &   $0.3654$ \\
+$\Delta E[Z_k]$      & 1{,}500   &   $0.7286$ \\
+$\Delta E[Z_k]$      & 2{,}000   &   $1.0898$ \\
+$\Delta E[Z_k]$      & 2{,}500   &   $1.4490$ \\
+$\Delta E[Z_k]$      & 5{,}500   &   $3.5094$ \\
+\addlinespace[1ex]
+\multicolumn{3}{l}{\emph{Price impact in percent}} \\
+E$[Z_k]$             &  500   &  $-0.0017$ \\
+$\Delta E[Z_k]$      & 1{,}000   &   $0.0036$ \\
+$\Delta E[Z_k]$      & 1{,}500   &   $0.0072$ \\
+$\Delta E[Z_k]$      & 2{,}000   &   $0.0107$ \\
+$\Delta E[Z_k]$      & 2{,}500   &   $0.0143$ \\
+$\Delta E[Z_k]$      & 5{,}500   &   $0.0346$ \\
+\midrule
+\multicolumn{3}{l}{\textbf{Constant price sequence (0/0/0)}} \\
+\addlinespace[0.5ex]
+\multicolumn{3}{l}{\emph{Price impact in ticks}} \\
+E$[Z_k]$             &  500   &  $-0.1550$ \\
+$\Delta E[Z_k]$      & 1{,}000   &   $0.3653$ \\
+$\Delta E[Z_k]$      & 1{,}500   &   $0.7284$ \\
+$\Delta E[Z_k]$      & 2{,}000   &   $1.0895$ \\
+$\Delta E[Z_k]$      & 2{,}500   &   $1.4487$ \\
+$\Delta E[Z_k]$      & 5{,}500   &   $3.5072$ \\
+\addlinespace[1ex]
+\multicolumn{3}{l}{\emph{Price impact in percent}} \\
+E$[Z_k]$             &  500   &  $-0.0015$ \\
+$\Delta E[Z_k]$      & 1{,}000   &   $0.0036$ \\
+$\Delta E[Z_k]$      & 1{,}500   &   $0.0072$ \\
+$\Delta E[Z_k]$      & 2{,}000   &   $0.0107$ \\
+$\Delta E[Z_k]$      & 2{,}500   &   $0.0143$ \\
+$\Delta E[Z_k]$      & 5{,}500   &   $0.0346$ \\
+\bottomrule
+\end{tabular}
+
+\caption{Impact of Trade Size (September-October 2008).}
+\label{tab:table-28}
+\end{table}
+
+
+\begin{table}[H]
+\centering
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\multicolumn{1}{c}{Metric} & \multicolumn{1}{l}{\textbf{\% Accuracy}} & \multicolumn{1}{l}{\textbf{Hand-Till Multiclass AUC}} \\ \midrule
+\textbf{In-sample}         & 41.47 \%                                 & 0.5661                                                \\
+\textbf{Out-of-sample}     & 38.65 \%                                 & 0.5796                                                \\ \bottomrule
+\end{tabular}
+\caption{Forecasts Evaluation for In- and Out-of-sample (September-October 2008).}
+\label{tab:table-29}
+\end{table}
+
+
+
+\begin{figure}[H]
+    \centering
+    \resizebox{0.85\textwidth}{!}{%
+\includegraphics{figures/2008 financial crisis/overfitting_compare_2008.pdf}}
+    \caption{Mean Probability by Prediction Class of In- and Out-of-sample (September-October 2008).}
+    \label{fig:figure-7}
+\end{figure}
