@@ -1,6 +1,7 @@
 \chapter{Theoretical Model}\label{chap:model}
 
-In this Chapter, the model specifications are defined and explained. Our ordered probit model is the simplified version than that of \citet{hausman1992}. Last but not least, the Chapter presents the forecasting evaluation metrics.
+In this Chapter, the model specifications are defined and explained. Our ordered probit model is a simplified version of that of \citet{hausman1992}. Last but not least, the Chapter presents the forecasting evaluation metrics.
+
 \vspace{5mm}
 
 {\noindent\bfseries Convention: Sign of Returns versus Price Movement}
@@ -135,7 +136,7 @@ Last but not least, as this thesis extends the purpose of \citet{hausman1992}'s 
 \begin{itemize}
     \item \textbf{\% Accuracy}: For each observation, the prediction is taken with the category that has the highest probability. Then, the accuracy is calculated by comparing the prediction with the actual category of that observation. The final \% accuracy is the mean of all \% correct predictions.
 
-    \item \textbf{\citet{handtill2001}'s Multiclass AUC (Area Under Curve)}: Receiver Operating Characteristic (ROC) curve and Area Under Curve (AUC) are common metrics used in binary classification models to measure the ability to rank of the model. The ROC plots the curve by the False Positive Rate (X-axis) ranging from 0 to 1, and the True Positive Rate (Y-axis) also ranging from 0 to 1. Thus the area under that ROC will have the value ranging from 0 to 1, with 1 is the perfect prediction and < 0.5 is performing worse than a random guess. However, for ordered probit model, it is not straightforward to measure this ranking performance. \citet{handtill2001} proposes a multiclass AUC version, where they evaluate the AUC between classes pairwise and then average the overall AUC. Although the multiclass AUC would be a good start to assess the ability to discriminate between classes of the model, it should be kept in mind that this metric does not take into account ordering (or the distance between classes). The multiclass AUC is calculated with the \verb|handtill2001| package.
+    \item \textbf{\citet{handtill2001}'s Multiclass AUC (Area Under Curve)}: Receiver Operating Characteristic (ROC) curve and Area Under Curve (AUC) are common metrics used in binary classification models to measure the ability to rank of the model. The ROC plots the curve by the False Positive Rate (X-axis) ranging from 0 to 1, and the True Positive Rate (Y-axis) also ranging from 0 to 1. Thus, the area under that ROC will have a value ranging from 0 to 1, with 1 being the perfect prediction and < 0.5 performing worse than a random guess. However, for the ordered probit model, it is not straightforward to measure this ranking performance. \citet{handtill2001} proposes a multiclass AUC version, where they evaluate the AUC between classes pairwise and then average the overall AUC. Although the multiclass AUC would be a good start to assess the ability to discriminate between classes of the model, it should be kept in mind that this metric does not consider ordering (or the distance between classes). The multiclass AUC is calculated with the \verb|handtill2001| package.
 \end{itemize}
 
 

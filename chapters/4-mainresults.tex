@@ -1,12 +1,12 @@
 \chapter{Empirical Results}\label{chap:mainresults}
 
-In this Chapter, the empirical results are discussed at length. The empirical study begins with the essential data preparation steps. In the following part, the Chapter presents the detailed descriptive statistics. The results for each research objectives i.e., market microstructure and forecasting, are then reviewed and explained.
+This Chapter discusses the empirical results at length. The empirical study begins with the essential data preparation steps. In the following part, the Chapter presents detailed descriptive statistics. The results for each research objective, i.e., market microstructure and forecasting, are then reviewed and explained.
 
 \section{Database}
 
-The data used for this study is from the tick-by-tick Trade and Quote database traded at the NYSE. As \citet{hausman1992} use one-year data for their analysis, we also take the full trading sample of IBM stock on NYSE from January 3 to December 29 of 2023 for the descriptive statistics and market microstructure analysis parts. For the forecasting analysis, the first 10 months of 2023 will be used for in-sample forecasting, and the last 2 months will be left for the out-of-sample forecasting.
+The data used for this study is from the tick-by-tick Trade and Quote database traded at the NYSE. As \citet{hausman1992} use one-year data for their analysis, we also take the full trading sample of IBM stock on NYSE from January 3 to December 29 of 2023 for the descriptive statistics and market microstructure analysis parts. For the forecasting analysis, the first 10 months of 2023 will be used for in-sample forecasting, and the last 2 months will be left for out-of-sample forecasting.
 
-Before arriving at the final dataset, we first match the trade and quote databases. Since the resolution of the current NYSE database is at nanosecond, we simply backward match the trade to the prevailing quote. We only use the data within the regular trading hours (9:30:00–16:00:00) and do not take into account overnight trading. The transactions happening at the first-second of each trading day are removed to reduce contamination from the opening call at the stock exchange. \tabref{tab:table-2} summarizes the number of observations used:
+Before arriving at the final dataset, we first match the trade and quote databases. Since the resolution of the current NYSE database is at nanosecond, we simply backward match the trade to the prevailing quote. We only use the data within the regular trading hours (9:30:00–16:00:00) and do not take into account overnight trading. The transactions happening on the first second of each trading day are removed to reduce contamination from the opening call at the stock exchange. \tabref{tab:table-2} summarizes the number of observations used:
 
 \begin{table}[ht]
 \centering
@@ -22,7 +22,7 @@ Panel B: In-sample     & January 3 - October 31, 2023            & 1,641,694 (86
 Panel B: Out-of-sample & November 1 - December 29, 2023          & 263,699 (14\% of total sample)   \\ \hline
 \end{tabular}%
 }
-\caption{Summary of Database: IBM traded on NYSE, 2023}
+\caption{Summary of Database: IBM traded on NYSE, 2023.}
 \label{tab:table-2}
 \end{table}
 
@@ -31,7 +31,7 @@ Panel B: Out-of-sample & November 1 - December 29, 2023          & 263,699 (14\%
 
 {\noindent\bfseries Price Change }
 
-\figref{fig:price-change-2023} depicts the histogram of transaction price changes for IBM on NYSE in 2023 by \textit{tick }(equivalent to \$0.01 or 1 cent). The distribution of price changes seems to be almost symmetric around zero, which is expected for a very liquid stock like IBM. Moreover, the histogram shows that the majority of mass lies in the range of -4 to +4-tick changes. In order to also account for more extreme cases, we could choose the number of state \textit{m} = 14, including the changes from <-6 to >+6-tick. 
+\figref{fig:price-change-2023} depicts the histogram of transaction price changes for IBM on NYSE in 2023 by \textit{tick }(equivalent to \$0.01 or 1 cent). The distribution of price changes seems to be almost symmetric around zero, which is expected for a very liquid stock like IBM. Moreover, the histogram shows that the majority of mass lies in the range of -4 to +4-tick changes. In order to also account for more extreme cases, we could choose the number of the state \textit{m} = 14, including the changes from <-6 to >+6-tick. 
 
 
 
@@ -39,7 +39,7 @@ Panel B: Out-of-sample & November 1 - December 29, 2023          & 263,699 (14\%
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/descriptive stat/price_change_IBM_N_2023.pdf}
-    \caption{Histogram of Price Changes: IBM on NYSE, 2023}
+    \caption{Histogram of Price Changes: IBM on NYSE, 2023.}
     \label{fig:price-change-2023}
 \end{figure}
 
@@ -64,11 +64,11 @@ Panel B: Out-of-sample & November 1 - December 29, 2023          & 263,699 (14\%
       \bottomrule
     \end{tabular}%
   }
-  \caption{Frequencies of Partition (Price Changes in Ticks)}
+  \caption{Frequencies of Partition (Price Changes in Ticks).}
   \label{tab:table-3}
 \end{table}
 
-Besides, most of the trade occurs at either higher than or lower than mid-quote prices as similar to the results of \citet{hausman1992} or \citet{kim2014}.
+Besides, most of the trade occurs at either higher or lower than mid-quote prices, similar to the results of \citet{hausman1992} or \citet{kim2014}.
 
 \begin{table}[H]
 \centering
@@ -92,8 +92,7 @@ Std. dev. & 0.0134\\
 
 {\noindent\bfseries Trade Direction }
 
-As mentioned in the previous chapter, the trade direction is determined via the procedure proposed by \citet{leeready1991} that incorporates two major steps. Firstly, the trade price is compared with the mid-quote to see if it is greater than mid-quote then it is buyer-initiated trade and vice versa, hereby noted as "mid-quote rule". Secondly, in case the price is equal to the mid-quote then a "tick-test" is applied. The "tick-test" will then compare the current trade with the previous trade's price. If there is again no difference between the two consecutive price then the sign of the last non-zero change will be selected. \citet{hausman1992} adopts only the "mid-quote rule" and thus has the third classification of "indeterminate" trade $IBS = 0$. If we would use the same procedure, our buyer-initiated classfication would simply be the percentage of trade with price > mid-quote (i.e. 40.07\%), and seller-initiated classification would be 43.28\%. Hence, our final results showed in \tabref{tab:table-5} with roughly similar proportion (48.43\% buyer-initiated versus 51.57\% seller-initiated) are reasonable.
-
+As mentioned in the previous chapter, the trade direction is determined via the procedure proposed by \citet{leeready1991} that incorporates two major steps. Firstly, the trade price is compared with the mid-quote to see if it is greater than mid-quote then it is buyer-initiated trade and vice versa, hereby noted as "mid-quote rule". Secondly, if the price is equal to the mid-quote, then a "tick-test" is applied. The "tick-test" will compare the current trade with the previous trade's price. If there is again no difference between the two consecutive prices, then the sign of the last non-zero change will be selected. \citet{hausman1992} adopts only the "mid-quote rule" and thus has the third classification of "indeterminate" trade $IBS = 0$. If we used the same procedure, our buyer-initiated classification would simply be the percentage of trade with price > mid-quote (i.e., 40.07\%), and seller-initiated classification would be 43.28\%. Hence, our final results showed in \tabref{tab:table-5} with roughly similar proportions (48.43\% buyer-initiated versus 51.57\% seller-initiated) are reasonable.
 
 \begin{table}[H]
 \centering
@@ -107,14 +106,13 @@ Mean & -0.0313\\
 Std. dev. & 0.9995\\
 \bottomrule
 \end{tabular}}
-\caption{Summary statistics: Trade Direction}
+\caption{Summary statistics: Trade Direction.}
 \label{tab:table-5}
 \end{table}
 
 {\noindent\bfseries Other Variables }
 
-Last but not least, \tabref{tab:table-6} gives an overview of some other microstructure variables. IBM is traded even more frequently on NYSE with an average of three seconds. This might as well be the effect of high-frequency trading (HFT). The average bid/ask spread is also getting much smaller.
-
+Last but not least, \tabref{tab:table-6} gives an overview of some other microstructure variables. IBM is traded even more frequently on the NYSE, with an average of three seconds. This might as well be the effect of high-frequency trading (HFT). The average bid/ask spread is also getting much smaller.
 
 
 
@@ -152,7 +150,7 @@ Std. dev. & 0.0311 & 1.4625 \\
   \end{tablenotes}
 
 \end{threeparttable}}
-\caption{Summary statistics: Other Variables}
+\caption{Summary statistics: Other Variables.}
 \label{tab:table-6}
 \end{table}
 
@@ -163,7 +161,7 @@ Std. dev. & 0.0311 & 1.4625 \\
 
 {\noindent\bfseries Maximum Likelihood Estimates  }
 
-\tabref{tab:table-7} presents the maximum likelihood estimates for our ordered probit model. Thirteen partition thresholds for fourteen categories, as well as all parameters for explanatory variables and conditional variance, are statistically significant. While \citet{hausman1992}'s results show negative sign of all lagged price changes $Z_k$ and argue that it might be the sign of price reversal, the same conclusion could not be found for our results.
+\tabref{tab:table-7} presents the maximum likelihood estimates for our ordered probit model. Thirteen partition thresholds for fourteen categories, as well as all parameters for explanatory variables and conditional variance, are statistically significant. While \citet{hausman1992}'s results show a negative sign of all lagged price changes $Z_k$ and argue that it might be a sign of price reversal, the same conclusion could not be found for our results.
 
 
 
@@ -237,7 +235,7 @@ $\gamma$: \(\Delta t/100\) \tnote{a}& 0.1424$^{***}$ & $\alpha_{10}$ & 1.2328$^{
 
 
 \end{threeparttable}}
-\caption{Ordered Probit Model Estimation}
+\caption{Ordered Probit Model Estimation (IBM on NYSE, 2023).}
 \label{tab:table-7}
 \end{center}
 \end{table}
@@ -246,9 +244,9 @@ $\gamma$: \(\Delta t/100\) \tnote{a}& 0.1424$^{***}$ & $\alpha_{10}$ & 1.2328$^{
 
 {\noindent\bfseries Impact of Sequence of Trade on the Next Price Change}
 
-As part of a study to explore the impact of trading volume on security price, \citet{easleyohara1987} propose an "information-effects" theory. In this model, the price process will not follow a Markov process i.e. information of the entire sequence of trade is essential to calculate the distribution of the next price, and not only the current price. 
+As part of a study to explore the impact of trading volume on security price, \citet{easleyohara1987} propose an "information-effects" theory. In this model, the price process will not follow a Markov process, i.e., information on the entire trade sequence is essential to calculate the distribution of the next price, not only the current price. 
 
-Putting this theory in context of our ordered probit model, \citet{hausman1992} discuss that if the entire sequence of trade would have an impact on the conditional mean of the next price, then one simple case we could test is whether the coefficients ($\beta_1$, $\beta_2$, $\beta_3$) of the lagged price changes different to each other or not. For example, in case the sequence of trade matters, the effect of price change sequence of -1/1/-1 (total change -1 tick) on the conditional mean would be different than 1/-1/-1 (total change also -1 tick). The formulation of the test statistic used by \citet{hausman1992} is similar to a joint Wald test for a linear hypothesis \citep{wooldridge2010}:
+Putting this theory in the context of our ordered probit model, \citet{hausman1992} discuss that if the entire sequence of trade would have an impact on the conditional mean of the next price, then one simple case we could test is whether the coefficients ($\beta_1$, $\beta_2$, $\beta_3$) of the lagged price changes different to each other or not. For example, in case the sequence of trade matters, the effect of the price change sequence of -1/1/-1 (total change -1 tick) on the conditional mean would be different than 1/-1/-1 (total change also -1 tick). The formulation of the test statistic used by \citet{hausman1992} is similar to a joint Wald test for a linear hypothesis \citep{wooldridge2010}:
 
 \[
 \begin{aligned}
@@ -275,7 +273,7 @@ H_1 &: \text{At least one of } \beta_1, \beta_2, \beta_3 \text{ differs}.
          \bottomrule
         \multicolumn{3}{l}{$^{***}p < 0.001$; $^{**}p < 0.01$; $^{*}p < 0.05$}
     \end{tabular}
-        \caption{Sequence of Trade: Linear Hypothesis Test}
+        \caption{Sequence of Trade: Linear Hypothesis Test.}
     \label{tab:table-8}
 \end{table}
 
@@ -305,9 +303,9 @@ However, the estimated coefficients relate to the impact on the conditional mean
     \item \textbf{Finally, calculating the expected price};
 \end{enumerate}
 
-\tabref{tab:table-9} report the computed conditional means for each specific scenario. The first upper part of the table shows the price impact of trade size in ticks. Since our data in 2023 has much smaller tick size (1 tick = \$0.01) than in 1988 data of \citet{hausman1992} (1 tick = \$0.125), the base price in this thesis is \$500 instead of \$5,000. Following the conditional mean of \$500 are the changes in conditional mean for the next additional dollar volume (e.g. \(\Delta E[Z_k]\) of \$1,000 depicts the change of conditional mean when buying an additional \$500). Moreover, the conditional mean of \$500 is negative, which might be effect by the bid/ask bounce. \citet{hausman1992} argue that while we assume all three previous trades are buys ($IBS_k$ = +1), the next trade could be a sell leading to the negative sign. This effect could be dismissed by calculating the difference in conditional mean for the larger dollar volume than the base \$500, and hence we could still capture the price impact effects of trade size. Our results for both increasing- and constant-price-sequence show the consistent message with their study: a larger trade size would have larger price impact.
+\tabref{tab:table-9} report the computed conditional means for each specific scenario. The first upper part of the table shows the price impact of trade size in ticks. Since our data in 2023 has much smaller tick size (1 tick = \$0.01) than in 1988 data of \citet{hausman1992} (1 tick = \$0.125), the base price in this thesis is \$500 instead of \$5,000. Following the conditional mean of \$500 are the changes in conditional mean for the next additional dollar volume (e.g., \(\Delta E[Z_k]\) of \$1,000 depicts the change of conditional mean when buying an additional \$500). Moreover, the conditional mean of \$500 is negative, which might be affected by the bid/ask bounce. \citet{hausman1992} argue that while we assume all three previous trades are buys ($IBS_k$ = +1), the next trade could be a sell leading to the negative sign. This effect could be dismissed by calculating the difference in conditional mean for the larger dollar volume than the base \$500, and hence, we could still capture the price impact effects of trade size. Our results for both increasing- and constant-price-sequence show the consistent message with their study: a larger trade size would have a larger price impact.
 
-Along with the price impact measured in ticks, the price impact in percent of \tabref{tab:table-9} shows the changes as the percentages of the average of the max (\$166.34) and min (\$120.55) trade price. As IBM is a very liquid stock, it is expected that the trade size would have very little impact on price. Moreover, \figref{fig:figure-2} plots the price impact  in percent as a function of the dollar volume i.e., price response function for our IBM stock, conditioning on the increasing-price-sequence as well as the last three trades are buys. A very flat curve again illustrates the high liquid characteristic of IBM \citep{hausman1992}.
+Along with the price impact measured in ticks, the price impact in percent of \tabref{tab:table-9} shows the changes as the percentages of the average of the max (\$166.34) and min (\$120.55) trade price. As IBM is a very liquid stock, the trade size is expected to have minimal impact on price. Moreover, \figref{fig:figure-2} plots the price impact in percent as a function of the dollar volume, i.e., a "price response function" for our IBM stock, conditioning on the increasing-price-sequence as well as the last three trades are buys. A very flat curve again illustrates the high liquid characteristic of IBM \citep{hausman1992}.
 
 
 
@@ -383,7 +381,7 @@ $\Delta E[Z_k]$      & 5{,}500   &   $0.0071$ \\
 
 {\noindent\bfseries In-sample }
 
-Our in-sample period from January 2023 to October 2023 is first estimated with the ordered probit model as in the previous section. \tabref{tab:table-10} presents the maximum likelihood estimation results. Similar to the full sample estimation, our in-sample's coefficients are all statistically significant. The pseudo $R^2$ i.e., McFadden's $R^2$ is also low as expected, nevertheless when we would like to extend the model (e.g. add more explanatory variables) we could use this as an evaluation metric.
+Our in-sample period from January 2023 to October 2023 is first estimated using the ordered probit model as in the previous section. \tabref{tab:table-10} presents the maximum likelihood estimation results. Similar to the full sample estimation, our in-sample coefficients are all statistically significant. The pseudo $R^2$, i.e., McFadden's $R^2$, is also low as expected. Nevertheless, when we would like to extend the model (e.g.,, add more explanatory variables), we could use this as an evaluation metric.
 
 
 
@@ -455,7 +453,7 @@ $\gamma$: \(\Delta t/100\) & 0.1432$^{***}$ & $\alpha_{10}$ & 1.2210$^{***}$ & &
     \label{fig:figure-3}
 \end{figure}
 
-To have a simpler illustration regarding the transaction price movement, we could cluster our 14 categories into three major movements: downward movement (category 1 to 7), no change (category 8), and upward movement (category 9 to 14). (The definition of each category could be reviewed in \tabref{tab:table-3}.) \figref{fig:figure-3} illustrates the average monthly fitted probability for the in-sample observations. The sum of fitted probability of falling into each category for each observation equals to one (1). Accordingly, the \textit{no movement} category has the highest fitted probability. Nevertheless, main evaluation metrics for in-sample prediction would be discussed together with the following out-of-sample results.
+To have a simpler illustration regarding the transaction price movement, we could cluster our 14 categories into three major movements: downward movement (category 1 to 7), no change (category 8), and upward movement (category 9 to 14). (The definition of each category could be reviewed in \tabref{tab:table-3}.) \figref{fig:figure-3} illustrates the average monthly fitted probability for the in-sample observations. The sum of the fitted probability of falling into each category for each observation equals one (1). Accordingly, the \textit{no movement} category has the highest fitted probability. Nevertheless, the primary evaluation metrics for in-sample prediction will be discussed with the following out-of-sample results.
 
 
 
@@ -479,7 +477,7 @@ To have a simpler illustration regarding the transaction price movement, we coul
 \end{table}
 
 
-One possible culprit for this poor performance might be the over-predicting of the \textit{no change} category. In \figref{fig:figure-4}, we could observe that more than 60\% of fitted probabilities are falling into \textit{no change}. Previous studies that employed similar ordered probit models also capture this tendency, with more than 50\% prediction as \textit{no change} \citep{yangparwada2012, kim2014}. 
+One possible culprit for this poor performance might be over-predicting the \textit{no change} category. In \figref{fig:figure-4}, we could observe that more than 60\% of fitted probabilities are falling into \textit{no change}. Previous studies employing similar ordered probit models also capture this tendency, with more than 50\% prediction as \textit{no change} \citep{yangparwada2012, kim2014}. 
 
 
 \begin{figure}[H]
@@ -490,7 +488,7 @@ One possible culprit for this poor performance might be the over-predicting of t
     \label{fig:figure-4}
 \end{figure}
 
-\figref{fig:figure-5} again shows the major miss-classification of other category into category 8 i.e. \textit{no change in price}. In general, our simplified ordered probit model seems to not be able to handle the class imbalance, as 62\% of our data is in category 8 (see \tabref{tab:table-3}).
+\figref{fig:figure-5} again shows the major miss-classification of another category into category 8, i.e., \textit{no change in price}. In general, our simplified ordered probit model seems not to be able to handle the class imbalance, as 62\% of our data is in category 8 (see \tabref{tab:table-3}).
 
 \begin{figure}[H]
     \centering

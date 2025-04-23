@@ -1,14 +1,14 @@
 \chapter{Further Applications}\label{chap:extension}
 
-In this Chapter, the ordered probit model is further applied to two special periods. The first section provides and discusses the main findings for the Covid-19 period. Afterwards, the second section presents the results for the financial crisis period in 2008. Both of the discussions follow the similar structure as in the main empirical result chapter.
+This Chapter further applies the ordered probit model to two special periods. The first section provides and discusses the main findings of the Covid-19 period. Afterward, the second section presents the results of the financial crisis in 2008. Both sections follow the same structure as the main empirical result chapter.
 
 
 \section{Covid-19 Period (February-April 2020)}
 
-The Covid-19 pandemic has brought significant disturbance to (not only) the financial and economic world. Since the stock data analyzed throughout this thesis is IBM traded on NYSE, the chosen focus is on the US stock market. \citet{coxetal2020} observe the turbulance of the S\&P 500 stock market index in the period between February to April 2020: from February 19 to March 23 the index lost 33.7\%, but rose back 29\% from March 24 to April 17. Hence, the data used in this section are taken from February to April 2020 to test the reaction of our model towards these disrupting times.
+The Covid-19 pandemic has brought significant disturbance to (not only) the financial and economic world. Since the stock data analyzed throughout this thesis is IBM traded on the NYSE, the chosen focus is on the US stock market. \citet{coxetal2020} observe the turbulence of the S\&P 500 stock market index in the period between February to April 2020: from February 19 to March 23, the index lost 33.7\%, but rose back 29\% from March 24 to April 17. Hence, the data used in this section are taken from February to April 2020 to test the reaction of our model towards these disrupting times.
 
 
-Similar to the main study, this section for Covid-19 period also has two panels: one for the full-sample market microstructure study, and the other one for the forecasting study. \tabref{tab:table-12} presents the database structure. For the forecasting panel, the first ten weeks are taken for in-sample, and the last three weeks are for out-of-sample analysis.
+Similar to the main study, this section for the Covid-19 period also has two panels: one for the full-sample market microstructure study and the other for the forecasting study. \tabref{tab:table-12} presents the database structure. For the forecasting panel, the first ten weeks are taken for in-sample analysis, and the last three are for out-of-sample analysis.
 
 \begin{table}[ht]
 \centering
@@ -29,7 +29,7 @@ Panel D: Out-of-sample & April 12 - April 30, 2020          & 126,111 (16\% of t
 \end{table}
 
 
-\tabref{tab:table-14} shows the frequency distribution of the Covid-19 period by each category. Noticeably, although the majority of mass still cluster around zero (category 8), there are more percentage at the extreme cases (<-6 and $\geq$6). Besides, the summary statistics of the explanatory variables (lagged price changes $Z_k$, trade direction indicator $IBS_k$, signed transformed volume \(lnV_k\cdot IBS_k\) ) could be found from \tabref{tab:table-13} to \tabref{tab:table-16} in Appendix \ref{app:tables-covid}. The proportion between price traded > Miquote and < Midquote is still roughly balance (48.32\% vs. 45.55\%), and similar picture could also be detected for trade direction (52.45\% buyer-initiated vs. 48.55\% seller initiated). The average time between trade is 1.8 seconds.
+\tabref{tab:table-14} shows the frequency distribution of the Covid-19 period by each category. Noticeably, although the majority of mass still clusters around zero (category 8), there are more percentages at the extreme cases (<-6 and $\geq$6). Besides, the summary statistics of the explanatory variables (lagged price changes $Z_k$, trade direction indicator $IBS_k$, signed transformed volume \(lnV_k\cdot IBS_k\) ) could be found from \tabref{tab:table-13} to \tabref{tab:table-16} in Appendix \ref{app:tables-covid}. The proportion between price traded > Miquote and < Midquote is still roughly balanced (48.32\% vs. 45.44\%), and a similar picture could also be detected for trade direction (51.45\% buyer-initiated vs. 48.55\% seller initiated). The average time between trades is 1.8 seconds.
 
 
 
@@ -72,7 +72,7 @@ The ordered probit model is estimated for the Covid-19 period data, detailed est
     \label{tab:table-18}
 \end{table}
 
-In \tabref{tab:table-19}, the conditional mean for each dollar trading volume case is presented. In general, the finding is consistent with the main study that larger trade size would move the next price changes upward. Noticeably, the absolute magnitude of the changes in conditional mean for both impact in ticks and impact in percent is larger than the main study period (2023). For instant, conditioning for the increasing price sequence scenario and the base price of \$500, an increase of \$1000 trading volume in Covid-19 would increase the conditional mean by 0.33 tick, while in main study period (2023) it only increases by 0.19 tick (see \tabref{tab:table-9}). Although more tests are needed to verify whether these gaps are significant or not, one possible explanation is the decrease of market liquidity on NYSE during the Covid-19 period \citep{chung&chuwonganant2023}. 
+In \tabref{tab:table-19}, the conditional mean for each dollar trading volume case is presented. The finding is consistent with the main study that a larger trade size would move the subsequent price changes upward. Noticeably, the absolute magnitude of the changes in conditional mean for both impact in ticks and impact in percent is larger than the main study period (2023). For instance, conditioning for the increasing price sequence scenario and the base price of \$500, an increase of \$1000 trading volume in Covid-19 would increase the conditional mean by 0.33 tick, while in the main study period (2023), it only increases by 0.19 tick (see \tabref{tab:table-9}). Although more tests are needed to verify whether these gaps are significant, one possible explanation is the decrease of market liquidity on NYSE during the Covid-19 period \citep{chung&chuwonganant2023}. 
 
 
 
@@ -127,7 +127,7 @@ $\Delta E[Z_k]$      & 5{,}500   &   $0.0142$ \\
 \label{tab:table-19}
 \end{table}
 
-Finally, the in-sample panel is estimated before computing the in- and out-of-sample fitted probabilities. For the Covid-19 period, the ordered probit model performs worse than the main study in 2023. As shown in \tabref{tab:table-20}, \% accuracy is only 51.8 for in-sample and 48.6 for out-of-sample. Besides, the tendency of predicting \textit{no change} movement (or category 8) is again prominent as depicting in \figref{fig:figure-6}.
+Finally, the in-sample panel is estimated before computing the in- and out-of-sample fitted probabilities. For the Covid-19 period, the ordered probit model performs worse than the main study in 2023. As shown in \tabref{tab:table-20}, \% accuracy is only 51.8\% for in-sample and 48.6\% for out-of-sample. Besides, the tendency of predicting \textit{no change} movement (or category 8) is again prominent as depicted in \figref{fig:figure-6}.
 
 
 \begin{table}[H]
@@ -161,9 +161,9 @@ Finally, the in-sample panel is estimated before computing the in- and out-of-sa
 
 \section{2008 Financial Crisis (September-October 2008)}
 
-On September 15 2008, Lehman Brothers, back then one of the largest investment bank in the US, filed for bankruptcy. Following its collapse, the Dow Jones Industrial Average (DJIA) went down by 500 points on that trading day \citep{johnson&mamun2012}. This is one of the key events that have caused the global financial crisis lasting for roughly until 2008, or one could go with the "Great Recession" \citep{islam&verick2011}. For this thesis, the investigated period is from September 2 to October 31, with seven weeks for in-sample and two weeks for the out-of-sample forecast. A complete event study would need to look at a longer time period. Nevertheless, \tabref{tab:table-21} describes the sample size for this chosen period.
+On September 15, 2008, Lehman Brothers, back then one of the largest investment banks in the US, filed for bankruptcy. Following its collapse, the Dow Jones Industrial Average (DJIA) went down by 500 points on that trading day \citep{johnson&mamun2012}. This is one of the key events that caused the global financial crisis to last roughly until 2009, or one could go with the "Great Recession" \citep{islam&verick2011}. For this thesis, the investigated period is from September 2 to October 31, with seven weeks for the in-sample and two weeks for the out-of-sample forecast. A complete event study would need to look at a more extended period. Nevertheless, \tabref{tab:table-21} describes the sample size for this chosen period.
 
-\tabref{tab:table-23} presents the distribution of price changes by tick as well as by our category's definition. Comparing to the previous case study of the recent Covid-19 pandemic, there are even more mass in the two tails. Moreover, further summary statistics of other $X_k$ variables are shown from \tabref{tab:table-22} to \tabref{tab:table-25} in Appendix \ref{app:tables-2008}. In overall, the trade direction proportion is roughly even between buyer-initiated (49.9\%) and seller-initiated (50.1\%). The bid/ask spread (mean of 0.08) is quite similar to the previous Covid-19 study (mean of 0.09), and both of these periods have wider spread than the main study's period (mean of 0.03).
+\tabref{tab:table-23} presents the distribution of price changes by tick as well as by our category's definition. Comparing to the previous case study of the recent Covid-19 pandemic, there are even more mass in the two tails. Moreover, further summary statistics of other $X_k$ variables are shown from \tabref{tab:table-22} to \tabref{tab:table-25} in Appendix \ref{app:tables-2008}. Overall, the trade direction proportion is roughly even between buyer-initiated (49.9\%) and seller-initiated (50.1\%). The bid/ask spread (mean of 0.08) is quite similar to the previous Covid-19 study (mean of 0.09), and both of these periods have wider spread than the main study's period (mean of 0.03).
 
 Moreover, \tabref{tab:table-26} in Appendix \ref{app:tables-2008} reports the ordered probit model's estimation results. Accordingly, when roughly comparing with our previous studies in 2023 and Covid-19 2020, this model performs worst with McFadden's $R^2$ of only 0.0252. Only the first lag of price changes estimate is statistically significant at 0.1\% level as in the main study, while the second is only significant at 5\% level, and the third lag coefficient is not statistically significant.
 
@@ -230,7 +230,7 @@ The test statistic for the effect of order flow is performed and presented in \t
     \label{tab:table-27}
 \end{table}
 
-Moving on to the impact of trade size on the next price change, \tabref{tab:table-28} presents the expected price impact for our dollar volume scenarios. Besides the similar trend of the larger volume the larger the impact, as noted for the Covid-19 period, the absolute impact in ticks for increasing amount of dollar volume for this "Great Recession" period is even greater. Again, conditioning for the increasing price sequence scenario and the base price of \$500, an increase of \$1000 trading volume in our financial crisis 2008 period would increase the conditional mean by 0.73 tick, while the impact of the previous studies are 0.33 tick (February-April 2020) and 0.19 tick (2023). A deeper analysis would needed to be able to investigate whether the seemingly decreasing in trade size impact due to the increasing liquidity of IBM stock through time, or it due to the effects of the crisis periods that cause the turbulence.
+Moving on to the impact of trade size on the next price change, \tabref{tab:table-28} presents the expected price impact for our dollar volume scenarios. Besides the similar trend of the larger volume the larger the impact, as noted for the Covid-19 period, the absolute impact in ticks for increasing amount of dollar volume for this "Great Recession" period is even greater. Again, conditioning for the increasing price sequence scenario and the base price of \$500, an increase of \$1000 trading volume in our financial crisis 2008 period would increase the conditional mean by 0.73 tick, while the impact of the previous studies are 0.33 tick (February-April 2020) and 0.19 tick (2023). A deeper analysis would needed to be able to investigate whether the seemingly decreasing in trade size's impact due to the increasing liquidity of IBM stock through time, or it due to the effects of the crisis periods that cause the turbulence.
 
 
 
@@ -299,7 +299,7 @@ $\Delta E[Z_k]$      & 5{,}500   &   $0.0346$ \\
 \label{tab:table-29}
 \end{table}
 
-Last but not least, the forecasting performance of the our ordered probit model is also the worst among studies' periods, with both in-sample and out-of-sample \% accuracy below 50\% reporting in \tabref{tab:table-29}. The model undoubtedly needs further refinement to be robust for different time periods.
+Last but not least, the forecasting performance of our ordered probit model is also the worst among studies' periods, with both in-sample and out-of-sample \% accuracy below 50\% reporting in \tabref{tab:table-29}. The model undoubtedly needs further refinement to be robust for different periods.
 
 
 
