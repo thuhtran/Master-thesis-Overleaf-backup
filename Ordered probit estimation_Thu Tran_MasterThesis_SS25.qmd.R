@@ -1,0 +1,1052 @@
+#*Note: This is the main code used for IBM 2023 dataset. 
+#Similar workflow is replicated for the Covid-19 and Financial Crisis 2008 period.
+
+#LIBRARY
+library(arrow)
+library(oglmx)
+
+library(aod)
+library(reshape2)
+library(ggplot2)
+#library(officer)
+#library(flextable)
+library(car)
+library(lubridate)
+
+library(kableExtra)
+library(texreg)
+#install.packages("dplyr")
+library(dplyr)
+
+library(tidyr)
+
+library(patchwork)
+
+#install.packages("HandTill2001")
+library(HandTill2001)
+
+df <- read_parquet("~/Files on Lap/Thesis Preparation/Tran_MasterThesis_SS25/Raw data/
+Prep Variables/prep_IBM_N_2023_Thu.parquet")
+
+#DATABASE
+date_range <- df %>%
+  summarize(
+    first_day = min(Date),
+    last_day = max(Date)
+  ) %>%
+  collect()
+
+cat("First trading day:", as.character(date_range$first_day), "\n")
+cat("Last trading day:", as.character(date_range$last_day), "\n")
+
+total_obs <- df %>%
+  summarize(count = n()) %>%
+  collect()
+cat("Total observations in dataset:", total_obs$count, "\n")
+
+df <- df %>%
+  mutate(DateConverted = ymd(Date))
+
+
+jan_oct_summary <- df %>%
+  filter(month(DateConverted) >= 1 & month(DateConverted) <= 10) %>%
+  summarize(
+    count = n(),
+    first_date = min(DateConverted, na.rm = TRUE),
+    last_date = max(DateConverted, na.rm = TRUE)
+  ) %>%
+  collect()
+
+cat("January to October:\n")
+cat("  Observations:", jan_oct_summary$count, "\n")
+cat("  First trading date:", format(jan_oct_summary$first_date, "%Y-%m-%d"), "\n")
+cat("  Last trading date:", format(jan_oct_summary$last_date, "%Y-%m-%d"), "\n\n")
+
+
+nov_dec_summary <- df %>%
+  filter(month(DateConverted) >= 11 & month(DateConverted) <= 12) %>%
+  summarize(
+    count = n(),
+    first_date = min(DateConverted, na.rm = TRUE),
+    last_date = max(DateConverted, na.rm = TRUE)
+  ) %>%
+  collect()
+
+cat("November to December:\n")
+cat("  Observations:", nov_dec_summary$count, "\n")
+cat("  First trading date:", format(nov_dec_summary$first_date, "%Y-%m-%d"), "\n")
+cat("  Last trading date:", format(nov_dec_summary$last_date, "%Y-%m-%d"), "\n")
+
+
+#SUMMARY STATS
+df <- df %>%
+  mutate(Z_tick = Z * 100) 
+
+df <- df %>%
+  mutate(Z_tick_rounded = round(Z_tick, 0))
+
+ggplot(df, aes(x = factor(Z_tick_rounded))) +
+  geom_bar(
+    fill = "#00004a",
+    color = "#000000",
+    width = 0.8
+  ) +
+  labs(
+    title="Histogram: Price Change",
+    x = "Tick",
+    y = "Number of Trades (Ten Thousands)"
+  ) +
+  theme_minimal() +
+  theme(
+    
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank() ,
+    plot.title = element_text(hjust = 0.5),
+    axis.text = element_text(size = 8),
+    axis.title = element_text(size = 10)
+  ) +
+  scale_x_discrete(
+    limits = as.character(seq(-8, 8, 1)),
+    labels = function(x) as.numeric(x)
+  ) +
+  # Format y-axis to show whole numbers (no decimals)
+  scale_y_continuous(
+    labels = function(x) sprintf("%.0f", x/10000)
+  )
+#ggsave("price_change_IBM_N_2023.pdf", width = 8, height = 6, dpi = 300)
+
+### Price changes vs Midquote
+df <- df %>%
+  mutate(price_compare = case_when(
+    Price >  MidQuote ~ "> Midquote",
+    Price == MidQuote ~ "= Midquote",
+    Price <  MidQuote ~ "< Midquote"
+  ))
+
+price_percentages <- df %>%
+  count(price_compare) %>%
+  ungroup() %>%                   
+  mutate(percentage = 100 * n / sum(n))
+
+z_stats <- df %>%
+  summarise(
+    mean    = mean(Z,   na.rm = TRUE),
+    std_dev = sd(Z,     na.rm = TRUE)
+  )
+
+summary_stats <- price_percentages %>%
+  transmute(
+    Statistic = price_compare,
+    IBM       = sprintf("%.2f", percentage)
+  ) %>%
+  bind_rows(
+    tibble(
+      Statistic = c("Mean", "Std. dev."),
+      IBM       = c(
+        sprintf("%.4f", z_stats$mean),
+        sprintf("%.4f", z_stats$std_dev)
+      )
+    )
+  )
+
+print(summary_stats)
+
+df$Z_cent <- df$Z * 100
+
+df <- df %>%
+  mutate(
+    Z_cat = case_when(
+      Z_cent <  -6 ~ 1,
+      Z_cent >= -6 & Z_cent < -5 ~ 2,
+      Z_cent >= -5 & Z_cent < -4 ~ 3,
+      Z_cent >= -4 & Z_cent < -3 ~ 4,
+      Z_cent >= -3 & Z_cent < -2 ~ 5,
+      Z_cent >= -2 & Z_cent < -1 ~ 6,
+      Z_cent >= -1 & Z_cent <  0 ~ 7,
+      Z_cent >=  0 & Z_cent <  1 ~ 8,
+      Z_cent >=  1 & Z_cent <  2 ~ 9,
+      Z_cent >=  2 & Z_cent <  3 ~ 10,
+      Z_cent >=  3 & Z_cent <  4 ~ 11,
+      Z_cent >=  4 & Z_cent <  5 ~ 12,
+      Z_cent >=  5 & Z_cent <  6 ~ 13,
+      Z_cent >=  6          ~ 14
+    )
+  ) %>%
+  mutate(Z_cat = factor(Z_cat, levels = 1:14, ordered = TRUE))
+
+
+freq_table <- df %>%
+  filter(!is.na(Z_cat)) %>% 
+  group_by(Z_cat) %>%
+  summarize(
+    Count = n(),
+    Percentage = n() / nrow(df) * 100
+  ) %>%
+  ungroup()
+
+
+
+freq_table <- freq_table %>%
+  mutate(
+    Category = case_when(
+      Z_cat == 1 ~ "< -6",
+      Z_cat == 2 ~ "-6 to -5",
+      Z_cat == 3 ~ "-5 to -4",
+      Z_cat == 4 ~ "-4 to -3",
+      Z_cat == 5 ~ "-3 to -2",
+      Z_cat == 6 ~ "-2 to -1",
+      Z_cat == 7 ~ "-1 to 0",
+      Z_cat == 8 ~ "0 to 1",
+      Z_cat == 9 ~ "1 to 2",
+      Z_cat == 10 ~ "2 to 3",
+      Z_cat == 11 ~ "3 to 4",
+      Z_cat == 12 ~ "4 to 5",
+      Z_cat == 13 ~ "5 to 6",
+      Z_cat == 14 ~ "> 6"
+    )
+  ) %>%
+  select(Category, Count, Percentage)
+
+
+freq_table <- freq_table %>%
+  mutate(Percentage = sprintf("%.2f%%", Percentage))
+horizontal_table <- data.frame(
+  Statistic = "Percentage",
+  t(freq_table$Percentage)
+)
+colnames(horizontal_table) <- c("Statistic", freq_table$Category)
+
+partition_table_withoutNA <- kable(horizontal_table, format = "latex", booktabs = TRUE, align = 'r') %>%
+  kable_styling(position = "center")
+cat(partition_table_withoutNA, file = "partition_table_withoutNA.tex")
+
+ibs_summary <- df %>%
+  filter(!is.na(IBS)) %>%  
+  summarize(
+    #  buyer-initiated (IBS = 1)
+    buyer_percent = mean(IBS == 1) * 100,
+    # seller-initiated trades (IBS = -1)
+    seller_percent = mean(IBS == -1) * 100,
+    
+    mean_ibs = mean(IBS),
+    sd_ibs = sd(IBS)
+  )
+
+ibs_table <- data.frame(
+  Statistic = c(
+    "Trade direction (IBS)",
+    "Buyer-initiated (%)",
+    "Seller-initiated (%)",
+    "Mean",
+    "Std. dev."
+  ),
+  IBM = c(
+    "", 
+    sprintf("%.2f", ibs_summary$buyer_percent),
+    sprintf("%.2f", ibs_summary$seller_percent),
+    sprintf("%.4f", ibs_summary$mean_ibs),
+    sprintf("%.4f", ibs_summary$sd_ibs)
+  )
+)
+
+
+cat(kable(ibs_table, format = "latex", booktabs = TRUE, align = c('l', 'r')),file = "ibs_table.tex")
+
+
+df <- df %>%
+  mutate(signed_lnV = lnV * IBS)
+
+summary_stats <- df %>%
+  filter(!is.na(signed_lnV), !is.na(delta_T), !is.na(BidAskSpread)) %>%
+  summarize(
+    # signed_lnV
+    signed_lnV_mean = mean(signed_lnV, na.rm = TRUE),
+    signed_lnV_sd = sd(signed_lnV, na.rm = TRUE),
+    
+    # delta_T
+    delta_T_mean = mean(delta_T, na.rm = TRUE),
+    delta_T_sd = sd(delta_T, na.rm = TRUE),
+    
+    # BidAskSpread
+    bidaskspread_mean = mean(BidAskSpread, na.rm = TRUE),
+    bidaskspread_sd = sd(BidAskSpread, na.rm = TRUE)
+  )
+
+stats_table <- data.frame(
+  Statistic = c(
+    "\\textbf{Signed transformed volume}",
+    "Mean",
+    "Std. dev.",
+    "\\textbf{Time between trades (seconds)}",
+    "Mean",
+    "Std. dev.",
+    "\\textbf{Bid/ask spread}",
+    "Mean",
+    "Std. dev."
+  ),
+  IBM = c(
+    "",
+    sprintf("%.4f", summary_stats$signed_lnV_mean),
+    sprintf("%.4f", summary_stats$signed_lnV_sd),
+    "",
+    sprintf("%.4f", summary_stats$delta_T_mean),
+    sprintf("%.4f", summary_stats$delta_T_sd),
+    "",
+    sprintf("%.4f", summary_stats$bidaskspread_mean),
+    sprintf("%.4f", summary_stats$bidaskspread_sd)
+  )
+)
+
+
+cat(kable(stats_table, format = "latex", booktabs = TRUE, align = c('l', 'r')),file = "other_summary_table.tex")
+
+
+df <- df %>% #price changes
+  mutate(
+    Z_l1 = lag(Z_cent, 1),
+    Z_l2 = lag(Z_cent, 2),
+    Z_l3 = lag(Z_cent, 3)
+  )
+
+df <- df %>% #trade direction
+  mutate(
+    IBS_l1 = lag(IBS, 1),
+    IBS_l2 = lag(IBS, 2),
+    IBS_l3 = lag(IBS, 3)
+  )
+
+df <- df %>% #signed dollar volume
+  mutate(
+    signed_lnV_l1 = lag(signed_lnV, 1),
+    signed_lnV_l2 = lag(signed_lnV, 2),
+    signed_lnV_l3 = lag(signed_lnV, 3)
+  )
+
+
+df <- df %>% # dollar volume #for price impact later
+  mutate(
+    V_l1 = lag(V, 1),
+    V_l2 = lag(V, 2),
+    V_l3 = lag(V, 3)
+  )
+
+
+df$Z_cat_num <- as.numeric(df$Z_cat)
+
+df$sqrt_dT <- sqrt(df$delta_T_scaled100)
+df$ln_sqrt_dT <- log(df$sqrt_dT)
+
+#ORDERED PROBIT MODEL
+
+op1 <-oglmx(Z_cat_num ~  ln_sqrt_dT + Z_l1 + Z_l2 + Z_l3 
+            + IBS_l1 + IBS_l2 + IBS_l3 
+            + signed_lnV_l1 + signed_lnV_l2 + signed_lnV_l3,
+            formulaSD  = ~  ln_sqrt_dT,
+            data=df, 
+            link="probit", 
+            constantMEAN=FALSE, 
+            constantSD=FALSE, 
+            beta=c(0,NA,NA,NA,NA,NA,NA,NA,NA,NA),
+            threshparam=NULL,
+            analhessian=TRUE,
+            na.action=na.exclude,
+            savemodelframe=TRUE, robust=TRUE)
+op1_results <- summary(op1)
+#NOTE: the first argument is set to 0 because the oglmx package
+#require the variable in the sdev equation to also be in the 
+#explanatory matrix. So to work around this the coefficient of
+#the extra variable to set to 0.
+
+#texreg(op1,
+#   caption = "Ordered Generalized Linear Models Results",
+#   label = "tab:oglmx-results",
+#  booktabs = TRUE,
+#  dcolumn = TRUE, digits = 4)
+
+##########2. Order-flow dependence
+#based on section 6.1
+b <- coef(op1)[c("Z_l1", "Z_l2", "Z_l3")] #lagged price changes
+
+V <- vcov(op1)[c("Z_l1", "Z_l2", "Z_l3"),
+               c("Z_l1", "Z_l2", "Z_l3")]
+
+#Hausman's method
+# restriction matrix A
+A <- matrix(c(1, -1,  0,
+              0,  1, -1),
+            nrow = 2, byrow = TRUE)
+
+
+testStat <- t(b) %*% t(A) %*% solve(A %*% V %*% t(A)) %*% A %*% b
+testStat
+
+p_value <- 1 - pchisq(testStat, df=2)
+cat("Null hypothesis of order-flow independence:", 
+    ifelse(p_value < 0.05, "Rejected", "Not rejected"), "at 5% level")
+
+#alternative i.e. Wald test
+linearHypothesis(op1, c("Z_l1 - Z_l2 = 0", "Z_l2 - Z_l3 = 0"))
+
+#######################3. Price impact per unit volume of trade
+
+#Case 1 & 2: change value in Z accordingly
+#case 1: Z=1
+#case 2: Z=0
+thresholds <- op1$allparams$threshparam
+
+X <- op1$modelframes$X
+beta <- op1$allparams$beta #coeff of explanatory vars
+xb <- as.vector(X %*% beta)
+
+
+Z <- op1$modelframes$Z #std dev
+delta <- op1$allparams$delta #variance coeff
+z_delta <- as.vector(Z %*% delta)
+std_dev <- exp(z_delta)
+
+
+n <- 1904393 #REMINDER: change no. of obs when analyze a new case
+n_thresholds <- length(thresholds)
+xb_matrix <- matrix(xb, nrow = n, ncol = n_thresholds, byrow = FALSE)
+thresholds_matrix <- matrix(thresholds, nrow = n, ncol = n_thresholds, byrow = TRUE)
+numerator <- thresholds_matrix - xb_matrix
+std_dev_matrix <- matrix(std_dev, nrow = n, ncol = n_thresholds, byrow = FALSE)
+prep_Prob <- numerator / std_dev_matrix
+colnames(prep_Prob) <- paste0("threshold_", 1:n_thresholds)
+
+cat_no <- 14
+probs <- matrix(NA, nrow = n, ncol = cat_no)
+probs[, 1] <- pnorm(prep_Prob[, "threshold_1"])  # P(Y = 1) #prob of normal dist
+for (j in 2:(cat_no-1)) {
+  probs[, j] <- pnorm(prep_Prob[, paste0("threshold_", j)]) - pnorm(prep_Prob[, paste0("threshold_", j-1)])
+}
+probs[, cat_no] <- 1 - pnorm(prep_Prob[, paste0("threshold_", cat_no-1)])  # P(Y = 14)
+
+colnames(probs) <- paste0("P(Y=", 1:cat_no, ")")
+#head(probs)
+
+
+ticks <- c(-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6)
+E_Z <- as.vector(probs %*% ticks)
+
+
+median_volume <- median(df$V_l1, na.rm = TRUE)
+V_med_2 <- median_volume/100
+V_med_3 <- median_volume/100
+
+trade_sizes <- c(500, 1000, 1500, 2000, 2500, 5500)
+
+
+n_thresholds <- length(thresholds)
+mean_delta_T <- mean(df$ln_sqrt_dT, na.rm = TRUE)
+
+
+X_template <- matrix(0, nrow = 1, ncol = ncol(X))
+colnames(X_template) <- colnames(X)
+X_template[1, "Z_l1"] <- 0
+X_template[1, "Z_l2"] <- 0
+X_template[1, "Z_l3"] <- 0
+X_template[1, "IBS_l1"] <- 1
+X_template[1, "IBS_l2"] <- 1
+X_template[1, "IBS_l3"] <- 1
+X_template[1, "signed_lnV_l2"] <- V_med_2
+X_template[1, "signed_lnV_l3"] <- V_med_3
+
+
+Z_template <- matrix(0, nrow = 1, ncol = ncol(Z))
+colnames(Z_template) <- colnames(Z)
+Z_template[1, "ln_sqrt_dT"] <- mean_delta_T
+
+#ticks_rescaled <- ticks * (0.01/0.125) 
+
+E_Z_results <- numeric(length(trade_sizes))
+names(E_Z_results) <- paste0("Trade Size $", trade_sizes)
+
+
+for (t in 1:length(trade_sizes)) {
+  V_l1 <- trade_sizes[t]
+  
+  X_temp <- X_template
+  X_temp[1, "signed_lnV_l1"] <- V_l1/100
+  
+  xb <- as.vector(X_temp %*% beta)
+  
+  z_delta <- as.vector(Z_template %*% delta)
+  std_dev <- exp(z_delta)
+  
+  xb_matrix <- matrix(xb, nrow = 1, ncol = n_thresholds, byrow = FALSE)
+  thresholds_matrix <- matrix(thresholds, nrow = 1, ncol = n_thresholds, byrow = TRUE)
+  std_dev_matrix <- matrix(std_dev, nrow = 1, ncol = n_thresholds, byrow = FALSE)
+  prep_Prob <- (thresholds_matrix - xb_matrix) / std_dev_matrix
+  
+  probs <- matrix(NA, nrow = 1, ncol = cat_no)
+  probs[, 1] <- pnorm(prep_Prob[, 1])
+  for (j in 2:(cat_no-1)) {
+    probs[, j] <- pnorm(prep_Prob[, j]) - pnorm(prep_Prob[, j-1])
+  }
+  probs[, cat_no] <- 1 - pnorm(prep_Prob[, cat_no-1])
+  
+  E_Z <- as.vector(probs %*% ticks)
+  E_Z_results[t] <- E_Z
+  
+}
+
+
+E_Z_base <- E_Z_results[1]
+Delta_E_Z <- E_Z_results - E_Z_base
+names(Delta_E_Z) <- paste0("Trade Size $", trade_sizes)
+
+max_price  <- max(df$Price, na.rm = TRUE)
+min_price <- min(df$Price, na.rm = TRUE)
+avg_price <- (max_price + min_price) / 2
+tick_value <- 0.01
+pct_imp_vs_mid <- (E_Z_results * tick_value) / avg_price * 100
+pct_delta_vs_base <- pct_imp_vs_mid - pct_imp_vs_mid[1]
+
+print("E[Z] for each trade size:")
+print(E_Z_results)
+print("Delta E[Z] relative to $500 trade:")
+print(Delta_E_Z)
+
+print(pct_imp_vs_mid)
+print(pct_delta_vs_base)
+
+print(max_price)
+print(min_price)
+
+
+#print(std_dev)
+trade_size_table_case_2 <- data.frame(
+  Trade_Size = paste0("$", trade_sizes),
+  Impact_Ticks = round(E_Z_results, 4),
+  Impact_Percent = round(pct_imp_vs_mid, 4),
+  Delta_Impact_Ticks = c(0, round(Delta_E_Z[-1], 4)),
+  Delta_Impact_Percent = c(0, round(pct_delta_vs_base[-1], 4))
+)
+print(trade_size_table_case_2,row.names=FALSE)
+
+print(trade_size_table_case_1,row.names=FALSE)
+
+volumes <- seq(0, 50000, by = 500) #increments of 500 dollar
+
+calculate_impact <- function(volume, model_params) {
+  
+  V_l1 <- volume
+  
+  X_temp <- X_template
+  X_temp[1, "signed_lnV_l1"] <- V_l1/100
+  
+  xb <- as.vector(X_temp %*% beta)
+  
+  z_delta <- as.vector(Z_template %*% delta)
+  std_dev <- exp(z_delta)
+  
+  xb_matrix <- matrix(xb, nrow = 1, ncol = n_thresholds, byrow = FALSE)
+  thresholds_matrix <- matrix(thresholds, nrow = 1, ncol = n_thresholds, byrow = TRUE)
+  std_dev_matrix <- matrix(std_dev, nrow = 1, ncol = n_thresholds, byrow = FALSE)
+  prep_Prob <- (thresholds_matrix - xb_matrix) / std_dev_matrix
+  
+  probs <- matrix(NA, nrow = 1, ncol = cat_no)
+  probs[, 1] <- pnorm(prep_Prob[, 1])
+  for (j in 2:(cat_no-1)) {
+    probs[, j] <- pnorm(prep_Prob[, j]) - pnorm(prep_Prob[, j-1])
+  }
+  probs[, cat_no] <- 1 - pnorm(prep_Prob[, cat_no-1])
+  
+  E_Z <- as.vector(probs %*% ticks)
+  
+  # percent impact
+  pct_impact <- (E_Z * tick_value) / avg_price * 100
+  
+  return(pct_impact)
+}
+
+impacts <- sapply(volumes, calculate_impact, model_params = list())
+
+
+#par(mar = c(5, 5, 2, 5)) 
+
+# plot
+#plot(volumes/100, impacts, type = "l", lwd = 2, 
+#  xlab = "Volume ($100's)", 
+#  ylab = "Percentage Price Impact",
+#  ylim = c(0, 0.4 * 1.1), 
+#   cex.lab = 0.8,  
+##   cex.axis = 0.8,
+#   col = "darkblue")  
+
+
+#grid(lty = "dotted", col = "lightgray")
+
+
+
+p_2 <-ggplot(data.frame(x = volumes/100, y = impacts), aes(x = x, y = y)) +
+  geom_line(size = 1.5, colour = "darkblue") +               
+  scale_y_continuous(limits = c(0, 0.4 * 1.1)) +              
+  labs(
+    x = "Volume ($100's)",
+    y = "Percentage Price Impact"
+  ) +
+  theme_minimal(base_size = 8) +                            
+  theme(
+    axis.title   = element_text(size = rel(0.8)),            
+    axis.text    = element_text(size = rel(0.8)),            
+    panel.grid.major = element_line(colour = "lightgray", 
+                                    linetype = "dotted"),
+    panel.grid.minor = element_line(colour = "lightgray", 
+                                    linetype = "dotted")
+  )
+#ggsave("price_impact_plot.pdf", plot = p_2, width = 8, height = 6)
+
+#FORECASTING
+
+df_in_sample <- subset(df, as.numeric(format(DateConverted, "%m")) <= 10)
+
+op2 <-oglmx(Z_cat_num ~  ln_sqrt_dT + Z_l1 + Z_l2 + Z_l3 
+            + IBS_l1 + IBS_l2 + IBS_l3 
+            + signed_lnV_l1 + signed_lnV_l2 + signed_lnV_l3,
+            formulaSD  = ~  ln_sqrt_dT,
+            data=df_in_sample, 
+            link="probit", 
+            constantMEAN=FALSE, 
+            constantSD=FALSE, 
+            beta=c(0,NA,NA,NA,NA,NA,NA,NA,NA,NA),
+            threshparam=NULL,
+            analhessian=TRUE,
+            na.action=na.exclude,
+            savemodelframe=TRUE, robust=TRUE)
+op2_results <- summary(op2)
+
+texreg(op2,
+       caption = "In-sample Results",
+       label = "tab:oglmx-results-insample",
+       booktabs = TRUE,
+       dcolumn = TRUE, digits = 4)
+
+thresholds <- op2$allparams$threshparam
+
+X <- op2$modelframes$X
+beta <- op2$allparams$beta #coeff of explanatory vars
+xb <- as.vector(X %*% beta)
+
+
+Z <- op2$modelframes$Z #std dev
+delta <- op2$allparams$delta #variance coeff
+z_delta <- as.vector(Z %*% delta)
+std_dev <- exp(z_delta)
+
+
+n <- 1640858
+n_thresholds <- length(thresholds)
+xb_matrix <- matrix(xb, nrow = n, ncol = n_thresholds, byrow = FALSE)
+thresholds_matrix <- matrix(thresholds, nrow = n, ncol = n_thresholds, byrow = TRUE)
+numerator <- thresholds_matrix - xb_matrix
+std_dev_matrix <- matrix(std_dev, nrow = n, ncol = n_thresholds, byrow = FALSE)
+prep_Prob <- numerator / std_dev_matrix
+colnames(prep_Prob) <- paste0("threshold_", 1:n_thresholds)
+
+cat_no <- 14
+probs <- matrix(NA, nrow = n, ncol = cat_no)
+probs[, 1] <- pnorm(prep_Prob[, "threshold_1"])  # P(Y = 1) #prob of normal dist
+for (j in 2:(cat_no-1)) {
+  probs[, j] <- pnorm(prep_Prob[, paste0("threshold_", j)]) - pnorm(prep_Prob[, paste0("threshold_", j-1)])
+}
+probs[, cat_no] <- 1 - pnorm(prep_Prob[, paste0("threshold_", cat_no-1)])  # P(Y = 14)
+
+colnames(probs) <- paste0("P(Y=", 1:cat_no, ")")
+#head(probs)
+#rowSums(probs)
+
+valid_rows <- rep(TRUE, nrow(df_in_sample))
+predictors <- c("ln_sqrt_dT", "Z_l1", "Z_l2", "Z_l3", 
+                "IBS_l1", "IBS_l2", "IBS_l3",
+                "signed_lnV_l1", "signed_lnV_l2", "signed_lnV_l3")
+for (var in predictors) {
+  if (var %in% names(df_in_sample)) {
+    valid_rows <- valid_rows & !is.na(df_in_sample[[var]])
+  }
+}
+
+n_valid <- sum(valid_rows)
+print(n_valid)
+print(nrow(probs))
+
+dates_for_probs <- df_in_sample$DateConverted[valid_rows]
+
+#PLOT
+
+prob_data <- data.frame(Date = dates_for_probs)
+
+for (j in 1:ncol(probs)) {
+  prob_data[,paste0("P(Y=", j, ")")] <- probs[,j]
+}
+
+# Cat 1-7
+# Cat 8
+# Cat 9-14
+prob_data$downward <- rowSums(prob_data[, paste0("P(Y=", 1:7, ")")])
+prob_data$noMovement <- prob_data[, "P(Y=8)"]
+prob_data$upward <- rowSums(prob_data[, paste0("P(Y=", 9:14, ")")])
+
+prob_data$month <- as.numeric(format(prob_data$Date, "%m"))
+
+monthly_averages <- prob_data %>%
+  group_by(month) %>%
+  summarize(
+    downward = mean(downward),
+    noMovement = mean(noMovement),
+    upward = mean(upward),
+    count = n()
+  )
+
+
+
+monthly_averages$month_name <- factor(month.abb[monthly_averages$month], 
+                                      levels = month.abb[1:10])
+
+monthly_averages <- monthly_averages %>%
+  arrange(month)
+
+plot_data <- monthly_averages %>%
+  select(month, month_name, downward, noMovement, upward) %>%
+  pivot_longer(cols = c(downward, noMovement, upward),
+               names_to = "movement",
+               values_to = "probability")
+
+in_plot <- ggplot(plot_data, aes(x = factor(month_name, levels = month.abb[1:10]), 
+                                 y = probability, group = movement, color = movement)) +
+  geom_line(size = 0.5) +
+  geom_point(size = 1.5) +
+  scale_color_manual(values = c("downward" = "#000000", "noMovement" = "#344A9A", "upward" = "#00a082"),
+                     labels = c("Downward (Cat 1-7)", "No Movement (Cat 8)", "Upward (Cat 9-14)")) +
+  labs(title = "In-sample Fitted Probabilities",
+       x = "Month",
+       y = "Probability",
+       color = "Movement Type") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        plot.title = element_text(hjust = 0.5, face = "bold"),
+        axis.text.x = element_text(angle = 0, hjust = 0.5),
+        panel.grid.major = element_line(
+          color    = "grey80",
+          size     = 0.2,
+          linetype = "dotted"
+        ),
+        panel.grid.minor = element_blank(),
+        axis.title.x = element_text(
+          margin = margin(t = 10, r = 0, b = 0, l = 0)  # top, right, bottom, left
+        ),
+        axis.title.y = element_text(
+          margin = margin(t = 0, r = 10, b = 0, l = 0)
+        )
+  ) +
+  scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.1))
+
+month_counts_text <- paste("Sample sizes:", 
+                           paste(monthly_averages$month_name, ": ", 
+                                 format(monthly_averages$count, big.mark=","), 
+                                 collapse=", "), 
+                           sep="\n")
+
+print(in_plot)
+
+#ggsave("monthly_probabilities_in_sample.pdf", in_plot, width = 8, height = 6, dpi = 300)
+
+
+#CALCULATE OUT OF SAMPLE PROB
+df_out_of_sample <- subset(df, as.numeric(format(DateConverted, "%m")) > 10)
+
+df_out_of_sample <- df_out_of_sample[complete.cases(df_out_of_sample[,
+ c("ln_sqrt_dT", "Z_l1", "Z_l2", "Z_l3", "IBS_l1", 
+ "IBS_l2", "IBS_l3", "signed_lnV_l1", "signed_lnV_l2", "signed_lnV_l3")]), ]
+
+#similar logic to in-sample
+X_out <- model.matrix(~  Z_l1 + Z_l2 + Z_l3 + 
+                        IBS_l1 + IBS_l2 + IBS_l3 + 
+                        signed_lnV_l1 + signed_lnV_l2 + signed_lnV_l3, 
+                      data = df_out_of_sample)
+Z_out <- model.matrix(~ ln_sqrt_dT - 1, data = df_out_of_sample)
+
+xb_out <- as.vector(X_out %*% beta)  
+z_delta_out <- as.vector(Z_out %*% delta)  
+std_dev_out <- exp(z_delta_out)  
+
+n_out <- nrow(df_out_of_sample) 
+n_thresholds <- length(thresholds)
+cat_no <- 14
+
+xb_matrix_out <- matrix(xb_out, nrow = n_out, ncol = n_thresholds, byrow = FALSE)
+thresholds_matrix_out <- matrix(thresholds, nrow = n_out, ncol = n_thresholds, byrow = TRUE)
+std_dev_matrix_out <- matrix(std_dev_out, nrow = n_out, ncol = n_thresholds, byrow = FALSE)
+
+numerator_out <- thresholds_matrix_out - xb_matrix_out
+prep_Prob_out <- numerator_out / std_dev_matrix_out
+colnames(prep_Prob_out) <- paste0("threshold", 1:n_thresholds)
+
+probs_out <- matrix(NA, nrow = n_out, ncol = cat_no)
+probs_out[, 1] <- pnorm(prep_Prob_out[, "threshold1"])  # P(Y = 1)
+for (j in 2:(cat_no-1)) {
+  probs_out[, j] <- pnorm(prep_Prob_out[, paste0("threshold", j)]) - 
+    pnorm(prep_Prob_out[, paste0("threshold", j-1)])
+}
+probs_out[, cat_no] <- 1 - pnorm(prep_Prob_out[, paste0("threshold", cat_no-1)])  # P(Y = 14)
+
+colnames(probs_out) <- paste0("P(Y=", 1:cat_no, ")")
+
+rowSums(probs_out)
+
+#head(probs_out) 
+
+prob_data_out <- data.frame(
+  Date = df_out_of_sample$DateConverted  
+)
+
+for (j in seq_len(ncol(probs_out))) {
+  prob_data_out[[ paste0("P(Y=", j, ")") ]] <- probs_out[, j]
+}
+
+
+prob_data_out <- prob_data_out %>%
+  mutate(
+    downward    = rowSums( across(`P(Y=1)`:`P(Y=7)`) ),
+    noMovement  = `P(Y=8)`,
+    upward      = rowSums( across(`P(Y=9)`:`P(Y=14)`) )
+  )
+
+prob_data_out <- prob_data_out %>%
+  mutate(
+    month = as.integer(format(Date, "%m"))
+  )
+
+
+monthly_out <- prob_data_out %>%
+  group_by(month) %>%
+  summarize(
+    downward   = mean(downward),
+    noMovement = mean(noMovement),
+    upward     = mean(upward),
+    count      = n()
+  )
+
+monthly_averages <- monthly_averages %>%
+  mutate(
+    month_name = factor(
+      month.abb[month],
+      levels = month.abb[1:12]
+    )
+  )
+
+monthly_out <- monthly_out %>%
+  mutate(
+    month_name = factor(
+      month.abb[month],
+      levels = month.abb[1:12]
+    )
+  )
+
+
+combined_monthly <- bind_rows(
+  monthly_averages,
+  monthly_out
+) %>%
+  arrange(month)
+
+
+plot_data_all <- combined_monthly %>%
+  select(month, month_name, downward, noMovement, upward) %>%
+  pivot_longer(
+    cols      = c(downward, noMovement, upward),
+    names_to  = "movement",
+    values_to = "probability"
+  )
+
+plot_data_all <- plot_data_all %>%
+  mutate(dataset = ifelse(month <= 10, "in-sample", "out-of-sample"))
+
+#overlapping plot
+p_all <- ggplot(plot_data_all,
+                aes(x = month_name,
+                    y = probability,
+                    group = movement,
+                    color = movement)) +
+  
+  geom_line(size = 0.6, alpha = 0.3) +
+  geom_point( size = 2, alpha = 0.3) +
+  
+  geom_line(data = filter(plot_data_all, dataset == "out-of-sample"),
+            size = 0.8, alpha = 1) +
+  geom_point(data = filter(plot_data_all, dataset == "out-of-sample"),
+             size = 2, alpha = 1) +
+  
+  scale_color_manual(
+    values = c(
+      downward   = "#000000",
+      noMovement = "#344A9A",
+      upward     = "#00a082"
+    ),
+    labels = c(
+      "Downward (Cat 1–7)",
+      "No Movement (Cat 8)",
+      "Upward (Cat 9–14)"
+    )
+  ) +
+  labs(
+    title = "In-sample and Out-of-sample Fitted Probabilities",
+    x     = "Month",
+    y     = "Probability",
+    color = "Movement Type"
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.major = element_line(color = "grey90", linetype = "dotted"),
+    panel.grid.minor   = element_blank(),
+    axis.title.x       = element_text(margin = margin(t = 10)),
+    axis.title.y       = element_text(margin = margin(r = 10)),
+    legend.position    = "bottom",
+    plot.title         = element_text(hjust = 0.5, face = "bold"),
+    axis.text.x        = element_text(angle = 0, hjust = 0.5)
+  ) +
+  scale_y_continuous(limits = c(0, 1), breaks = seq(0, 1, 0.1))
+
+print(p_all)
+#ggsave("monthly_probabilities_all.pdf", p_all, width = 8, height = 6, dpi = 300)
+
+
+#accuracy
+
+pred_in   <- apply(probs, 1, which.max)
+
+
+df_in_clean <- df_in_sample %>%
+  drop_na(
+    Z_l1, Z_l2, Z_l3,
+    IBS_l1, IBS_l2, IBS_l3,
+    signed_lnV_l1, signed_lnV_l2, signed_lnV_l3, ln_sqrt_dT
+  )
+
+actual_in <- df_in_clean$Z_cat_num
+acc_in <- mean(pred_in == actual_in) * 100
+print(acc_in)
+
+red_out   <- apply(probs_out, 1, which.max)
+
+
+df_out_clean <- df_out_of_sample %>%
+  drop_na(
+    Z_l1, Z_l2, Z_l3,
+    IBS_l1, IBS_l2, IBS_l3,
+    signed_lnV_l1, signed_lnV_l2, signed_lnV_l3, ln_sqrt_dT
+  )
+
+actual_out <- df_out_clean$Z_cat_num
+
+acc_out <- mean(pred_out == actual_out) * 100
+print(acc_out)
+
+#in-sample multiclass AUC
+Y <- df_in_clean$Z_cat_num
+Y_factor <- as.factor(Y)
+
+levels_Y <- levels(Y_factor)
+print(levels_Y)
+
+colnames(probs) <- as.character(1:cat_no)
+
+print(colnames(probs))
+
+hand_till_result <- auc(multcap(
+  response = Y_factor,
+  predicted = probs
+))
+print(hand_till_result)
+
+Y_out <- df_out_clean$Z_cat_num
+
+Y_out_factor <- as.factor(Y_out)
+
+
+#levels_Y_out <- levels(Y_out_factor)
+
+#print(levels_Y_out)
+
+colnames(probs_out) <- as.character(1:cat_no)
+
+
+#print(colnames(probs_out))
+
+hand_till_result_out <- auc(multcap(
+  response = Y_out_factor,
+  predicted = probs_out
+))
+print(hand_till_result_out)
+
+pred_in  <- apply(probs,  1, which.max)
+pred_out <- apply(probs_out, 1, which.max)
+
+correct_in  <- pred_in  == Y
+correct_out <- pred_out == Y_out
+
+mean_in_correct    <- colMeans(probs[correct_in,     , drop=FALSE])
+mean_in_incorrect  <- colMeans(probs[!correct_in,    , drop=FALSE])
+mean_out_correct   <- colMeans(probs_out[correct_out,   , drop=FALSE])
+mean_out_incorrect <- colMeans(probs_out[!correct_out,  , drop=FALSE])
+
+
+cat_no <- 14
+
+df_in  <- data.frame(
+  Category    = factor(1:cat_no),
+  Correct     = mean_in_correct,
+  Incorrect   = mean_in_incorrect
+)
+
+df_out <- data.frame(
+  Category    = factor(1:cat_no),
+  Correct     = mean_out_correct,
+  Incorrect   = mean_out_incorrect
+)
+
+
+
+plot_in <- df_in %>%
+  pivot_longer(-Category, names_to="Group", values_to="Probability") %>%
+  ggplot(aes(x=Category, y=Probability, fill=Group)) +
+  geom_col(position="dodge") +
+  labs(
+    title = "In-sample",
+    x     = "Category", 
+    y     = "Mean Probability"
+  ) +
+  theme_minimal()
+
+plot_out <- df_out %>%
+  pivot_longer(-Category, names_to="Group", values_to="Probability") %>%
+  ggplot(aes(x=Category, y=Probability, fill=Group)) +
+  geom_col(position="dodge") +
+  labs(
+    title = "Out-of-sample",
+    x     = "Category", 
+    y     = "Mean Probability"
+  ) +
+  theme_minimal()
+
+combined <- (plot_in + plot_out) +
+  plot_layout(ncol = 2, guides = "collect") &        # collect the one legend
+  scale_fill_manual(
+    name   = "Prediction",                           # legend title
+    values = c(Correct   = "#00a082",                # dark‐teal for Correct
+               Incorrect = "#000000")                # burnt‐orange for Incorrect
+  ) &
+  theme(
+    legend.position = "bottom",                      # put legend below
+    legend.title    = element_text(size = 10),       # tweak legend title size
+    legend.text     = element_text(size = 9)  ,
+    plot.title        = element_text(hjust = 0.5)# tweak legend text size
+  )
+
+combined
+
+#ggsave("overfitting_compare.pdf", combined, width = 8, height = 6, dpi = 300)
+      
+      
+
